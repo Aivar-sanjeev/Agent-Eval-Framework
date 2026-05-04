@@ -1,728 +1,107 @@
 {
-  "dataset_id": "9bea101b",
+  "dataset_id": "6acaaabc",
   "version": "v1.0",
-  "description": "Demo dataset v1.0",
-  "created_at": "2026-05-04T01:23:49.297687",
+  "description": "Benchmark dataset for agent v1.0 — 5 queries",
+  "created_at": "2026-05-04T01:32:45.683671",
   "entries": [
     {
-      "trace_id": "275003e6-8cb1-4f86-9700-c02443f34855",
+      "trace_id": "dfcab40c-accc-4692-b8b5-f7e51196f684",
       "query": "What is the current CO2 level in the atmosphere and how has it changed?",
       "agent_version": "v1.0",
-      "golden_answer": "[demo golden answer]",
+      "golden_answer": "CO2 levels have reached approximately 421 ppm in 2023, up from 280 ppm pre-industrial levels. Global temperatures have risen ~1.1Â°C since pre-industrial times.",
       "expected_tools": [
         "web_search"
       ],
       "labels": {
-        "optimal_tool_calls": 1
+        "query": "What is the current CO2 level in the atmosphere and how has it changed?",
+        "golden_answer": "CO2 levels have reached approximately 421 ppm in 2023, up from 280 ppm pre-industrial levels. Global temperatures have risen ~1.1Â°C since pre-industrial times.",
+        "expected_tools": [
+          "web_search"
+        ],
+        "optimal_tool_calls": 1,
+        "difficulty": "easy"
       },
-      "eval_results": [
-        {
-          "eval_id": "668b2fa8",
-          "eval_layer": "pre_tool",
-          "eval_name": "intent_clarity",
-          "trace_id": "275003e6-8cb1-4f86-9700-c02443f34855",
-          "span_id": null,
-          "passed": false,
-          "score": 0.709,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.061001",
-          "metadata": {}
-        },
-        {
-          "eval_id": "c40ac32c",
-          "eval_layer": "pre_tool",
-          "eval_name": "tool_selection",
-          "trace_id": "275003e6-8cb1-4f86-9700-c02443f34855",
-          "span_id": null,
-          "passed": false,
-          "score": 0.764,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.061049",
-          "metadata": {}
-        },
-        {
-          "eval_id": "8eca6cfa",
-          "eval_layer": "pre_tool",
-          "eval_name": "pre_call_hallucination",
-          "trace_id": "275003e6-8cb1-4f86-9700-c02443f34855",
-          "span_id": null,
-          "passed": false,
-          "score": 0.687,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.061070",
-          "metadata": {}
-        },
-        {
-          "eval_id": "4637aa4a",
-          "eval_layer": "post_tool",
-          "eval_name": "param_schema_validation",
-          "trace_id": "275003e6-8cb1-4f86-9700-c02443f34855",
-          "span_id": null,
-          "passed": false,
-          "score": 0.76,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "deterministic",
-          "timestamp": "2026-05-04T01:23:49.061084",
-          "metadata": {}
-        },
-        {
-          "eval_id": "33f92134",
-          "eval_layer": "post_tool",
-          "eval_name": "param_value_quality",
-          "trace_id": "275003e6-8cb1-4f86-9700-c02443f34855",
-          "span_id": null,
-          "passed": false,
-          "score": 0.69,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.061099",
-          "metadata": {}
-        },
-        {
-          "eval_id": "7a7df010",
-          "eval_layer": "post_tool",
-          "eval_name": "result_interpretation",
-          "trace_id": "275003e6-8cb1-4f86-9700-c02443f34855",
-          "span_id": null,
-          "passed": false,
-          "score": 0.641,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.061111",
-          "metadata": {}
-        },
-        {
-          "eval_id": "0f8a7696",
-          "eval_layer": "post_tool",
-          "eval_name": "next_step_decision",
-          "trace_id": "275003e6-8cb1-4f86-9700-c02443f34855",
-          "span_id": null,
-          "passed": false,
-          "score": 0.602,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.061126",
-          "metadata": {}
-        },
-        {
-          "eval_id": "f34eb93f",
-          "eval_layer": "e2e",
-          "eval_name": "goal_completion",
-          "trace_id": "275003e6-8cb1-4f86-9700-c02443f34855",
-          "span_id": null,
-          "passed": false,
-          "score": 0.636,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.061143",
-          "metadata": {}
-        },
-        {
-          "eval_id": "1184cde9",
-          "eval_layer": "e2e",
-          "eval_name": "efficiency",
-          "trace_id": "275003e6-8cb1-4f86-9700-c02443f34855",
-          "span_id": null,
-          "passed": false,
-          "score": 0.585,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "deterministic",
-          "timestamp": "2026-05-04T01:23:49.061155",
-          "metadata": {}
-        },
-        {
-          "eval_id": "449d0033",
-          "eval_layer": "e2e",
-          "eval_name": "final_hallucination",
-          "trace_id": "275003e6-8cb1-4f86-9700-c02443f34855",
-          "span_id": null,
-          "passed": true,
-          "score": 0.8,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.061166",
-          "metadata": {}
-        }
-      ]
+      "eval_results": []
     },
     {
-      "trace_id": "dec13735-f377-46c5-953e-1c8100c4bf97",
+      "trace_id": "f11e17d4-63c2-4ab8-9890-e62b38fcfb5d",
       "query": "If I invest $5000 at 7% annual compound interest for 10 years, how much will I have?",
       "agent_version": "v1.0",
-      "golden_answer": "[demo golden answer]",
+      "golden_answer": "After 10 years at 7% compound interest, $5000 grows to approximately $9,835.76. Formula: 5000 * (1.07)^10.",
       "expected_tools": [
-        "web_search"
+        "calculator"
       ],
       "labels": {
-        "optimal_tool_calls": 1
+        "query": "If I invest $5000 at 7% annual compound interest for 10 years, how much will I have?",
+        "golden_answer": "After 10 years at 7% compound interest, $5000 grows to approximately $9,835.76. Formula: 5000 * (1.07)^10.",
+        "expected_tools": [
+          "calculator"
+        ],
+        "optimal_tool_calls": 1,
+        "difficulty": "easy"
       },
-      "eval_results": [
-        {
-          "eval_id": "32238154",
-          "eval_layer": "pre_tool",
-          "eval_name": "intent_clarity",
-          "trace_id": "dec13735-f377-46c5-953e-1c8100c4bf97",
-          "span_id": null,
-          "passed": false,
-          "score": 0.687,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.093156",
-          "metadata": {}
-        },
-        {
-          "eval_id": "a9da4941",
-          "eval_layer": "pre_tool",
-          "eval_name": "tool_selection",
-          "trace_id": "dec13735-f377-46c5-953e-1c8100c4bf97",
-          "span_id": null,
-          "passed": false,
-          "score": 0.498,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.093245",
-          "metadata": {}
-        },
-        {
-          "eval_id": "03df5cca",
-          "eval_layer": "pre_tool",
-          "eval_name": "pre_call_hallucination",
-          "trace_id": "dec13735-f377-46c5-953e-1c8100c4bf97",
-          "span_id": null,
-          "passed": false,
-          "score": 0.604,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.093271",
-          "metadata": {}
-        },
-        {
-          "eval_id": "0ea7a7b0",
-          "eval_layer": "post_tool",
-          "eval_name": "param_schema_validation",
-          "trace_id": "dec13735-f377-46c5-953e-1c8100c4bf97",
-          "span_id": null,
-          "passed": false,
-          "score": 0.922,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "deterministic",
-          "timestamp": "2026-05-04T01:23:49.093290",
-          "metadata": {}
-        },
-        {
-          "eval_id": "532331d8",
-          "eval_layer": "post_tool",
-          "eval_name": "param_value_quality",
-          "trace_id": "dec13735-f377-46c5-953e-1c8100c4bf97",
-          "span_id": null,
-          "passed": false,
-          "score": 0.607,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.093309",
-          "metadata": {}
-        },
-        {
-          "eval_id": "c0d6d86d",
-          "eval_layer": "post_tool",
-          "eval_name": "result_interpretation",
-          "trace_id": "dec13735-f377-46c5-953e-1c8100c4bf97",
-          "span_id": null,
-          "passed": true,
-          "score": 0.888,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.093326",
-          "metadata": {}
-        },
-        {
-          "eval_id": "1ba6526d",
-          "eval_layer": "post_tool",
-          "eval_name": "next_step_decision",
-          "trace_id": "dec13735-f377-46c5-953e-1c8100c4bf97",
-          "span_id": null,
-          "passed": false,
-          "score": 0.634,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.093352",
-          "metadata": {}
-        },
-        {
-          "eval_id": "ab73da9e",
-          "eval_layer": "e2e",
-          "eval_name": "goal_completion",
-          "trace_id": "dec13735-f377-46c5-953e-1c8100c4bf97",
-          "span_id": null,
-          "passed": false,
-          "score": 0.538,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.093370",
-          "metadata": {}
-        },
-        {
-          "eval_id": "14d973e4",
-          "eval_layer": "e2e",
-          "eval_name": "efficiency",
-          "trace_id": "dec13735-f377-46c5-953e-1c8100c4bf97",
-          "span_id": null,
-          "passed": false,
-          "score": 0.443,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "deterministic",
-          "timestamp": "2026-05-04T01:23:49.093393",
-          "metadata": {}
-        },
-        {
-          "eval_id": "3867d612",
-          "eval_layer": "e2e",
-          "eval_name": "final_hallucination",
-          "trace_id": "dec13735-f377-46c5-953e-1c8100c4bf97",
-          "span_id": null,
-          "passed": false,
-          "score": 0.705,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.093409",
-          "metadata": {}
-        }
-      ]
+      "eval_results": []
     },
     {
-      "trace_id": "1c9863f1-0821-4ce1-a7c4-6280812d1d3c",
-      "query": "What's the weather in Tokyo and what is 25°C in Fahrenheit?",
+      "trace_id": "cf399a90-7142-4ed7-ace8-d3ccf527f7ea",
+      "query": "What's the weather in Tokyo and what is 25 degrees Celsius in Fahrenheit?",
       "agent_version": "v1.0",
-      "golden_answer": "[demo golden answer]",
+      "golden_answer": "Tokyo weather: Overcast, 18Â°C, 65% humidity. 25Â°C = 77.00Â°F.",
       "expected_tools": [
-        "web_search"
+        "weather_lookup",
+        "unit_converter"
       ],
       "labels": {
-        "optimal_tool_calls": 1
+        "query": "What's the weather in Tokyo and what is 25 degrees Celsius in Fahrenheit?",
+        "golden_answer": "Tokyo weather: Overcast, 18Â°C, 65% humidity. 25Â°C = 77.00Â°F.",
+        "expected_tools": [
+          "weather_lookup",
+          "unit_converter"
+        ],
+        "optimal_tool_calls": 2,
+        "difficulty": "medium"
       },
-      "eval_results": [
-        {
-          "eval_id": "d1861eb0",
-          "eval_layer": "pre_tool",
-          "eval_name": "intent_clarity",
-          "trace_id": "1c9863f1-0821-4ce1-a7c4-6280812d1d3c",
-          "span_id": null,
-          "passed": false,
-          "score": 0.697,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.149412",
-          "metadata": {}
-        },
-        {
-          "eval_id": "76b51fa8",
-          "eval_layer": "pre_tool",
-          "eval_name": "tool_selection",
-          "trace_id": "1c9863f1-0821-4ce1-a7c4-6280812d1d3c",
-          "span_id": null,
-          "passed": false,
-          "score": 0.725,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.149515",
-          "metadata": {}
-        },
-        {
-          "eval_id": "8d66a2a9",
-          "eval_layer": "pre_tool",
-          "eval_name": "pre_call_hallucination",
-          "trace_id": "1c9863f1-0821-4ce1-a7c4-6280812d1d3c",
-          "span_id": null,
-          "passed": true,
-          "score": 0.859,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.149570",
-          "metadata": {}
-        },
-        {
-          "eval_id": "125cd684",
-          "eval_layer": "post_tool",
-          "eval_name": "param_schema_validation",
-          "trace_id": "1c9863f1-0821-4ce1-a7c4-6280812d1d3c",
-          "span_id": null,
-          "passed": true,
-          "score": 0.969,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "deterministic",
-          "timestamp": "2026-05-04T01:23:49.149608",
-          "metadata": {}
-        },
-        {
-          "eval_id": "376db04d",
-          "eval_layer": "post_tool",
-          "eval_name": "param_value_quality",
-          "trace_id": "1c9863f1-0821-4ce1-a7c4-6280812d1d3c",
-          "span_id": null,
-          "passed": false,
-          "score": 0.477,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.149644",
-          "metadata": {}
-        },
-        {
-          "eval_id": "9e68e17a",
-          "eval_layer": "post_tool",
-          "eval_name": "result_interpretation",
-          "trace_id": "1c9863f1-0821-4ce1-a7c4-6280812d1d3c",
-          "span_id": null,
-          "passed": false,
-          "score": 0.549,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.149679",
-          "metadata": {}
-        },
-        {
-          "eval_id": "030eaab7",
-          "eval_layer": "post_tool",
-          "eval_name": "next_step_decision",
-          "trace_id": "1c9863f1-0821-4ce1-a7c4-6280812d1d3c",
-          "span_id": null,
-          "passed": false,
-          "score": 0.61,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.149718",
-          "metadata": {}
-        },
-        {
-          "eval_id": "7608a40f",
-          "eval_layer": "e2e",
-          "eval_name": "goal_completion",
-          "trace_id": "1c9863f1-0821-4ce1-a7c4-6280812d1d3c",
-          "span_id": null,
-          "passed": false,
-          "score": 0.448,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.149753",
-          "metadata": {}
-        },
-        {
-          "eval_id": "a2dfa8ef",
-          "eval_layer": "e2e",
-          "eval_name": "efficiency",
-          "trace_id": "1c9863f1-0821-4ce1-a7c4-6280812d1d3c",
-          "span_id": null,
-          "passed": true,
-          "score": 0.694,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "deterministic",
-          "timestamp": "2026-05-04T01:23:49.149787",
-          "metadata": {}
-        },
-        {
-          "eval_id": "39672f52",
-          "eval_layer": "e2e",
-          "eval_name": "final_hallucination",
-          "trace_id": "1c9863f1-0821-4ce1-a7c4-6280812d1d3c",
-          "span_id": null,
-          "passed": false,
-          "score": 0.64,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.149821",
-          "metadata": {}
-        }
-      ]
+      "eval_results": []
     },
     {
-      "trace_id": "0148b1ba-4af0-45d0-ab66-fd6805bf4dc4",
-      "query": "How far is a marathon in miles, and how long to run at 6 min/km?",
+      "trace_id": "d0669033-75f0-4d00-9f0b-d27bacbac4a0",
+      "query": "How far is a marathon in miles, and how long would it take to run at 6 minutes per km?",
       "agent_version": "v1.0",
-      "golden_answer": "[demo golden answer]",
+      "golden_answer": "A marathon is 42.195 km = 26.22 miles. At 6 min/km, it takes 42.195 * 6 = ~253 minutes (~4h 13m).",
       "expected_tools": [
-        "web_search"
+        "unit_converter",
+        "calculator"
       ],
       "labels": {
-        "optimal_tool_calls": 1
+        "query": "How far is a marathon in miles, and how long would it take to run at 6 minutes per km?",
+        "golden_answer": "A marathon is 42.195 km = 26.22 miles. At 6 min/km, it takes 42.195 * 6 = ~253 minutes (~4h 13m).",
+        "expected_tools": [
+          "unit_converter",
+          "calculator"
+        ],
+        "optimal_tool_calls": 2,
+        "difficulty": "medium"
       },
-      "eval_results": [
-        {
-          "eval_id": "65b8e4a1",
-          "eval_layer": "pre_tool",
-          "eval_name": "intent_clarity",
-          "trace_id": "0148b1ba-4af0-45d0-ab66-fd6805bf4dc4",
-          "span_id": null,
-          "passed": false,
-          "score": 0.574,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.208888",
-          "metadata": {}
-        },
-        {
-          "eval_id": "b4239765",
-          "eval_layer": "pre_tool",
-          "eval_name": "tool_selection",
-          "trace_id": "0148b1ba-4af0-45d0-ab66-fd6805bf4dc4",
-          "span_id": null,
-          "passed": false,
-          "score": 0.518,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.208958",
-          "metadata": {}
-        },
-        {
-          "eval_id": "0b7e923e",
-          "eval_layer": "pre_tool",
-          "eval_name": "pre_call_hallucination",
-          "trace_id": "0148b1ba-4af0-45d0-ab66-fd6805bf4dc4",
-          "span_id": null,
-          "passed": false,
-          "score": 0.562,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.208986",
-          "metadata": {}
-        },
-        {
-          "eval_id": "30e0fc11",
-          "eval_layer": "post_tool",
-          "eval_name": "param_schema_validation",
-          "trace_id": "0148b1ba-4af0-45d0-ab66-fd6805bf4dc4",
-          "span_id": null,
-          "passed": false,
-          "score": 0.822,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "deterministic",
-          "timestamp": "2026-05-04T01:23:49.209009",
-          "metadata": {}
-        },
-        {
-          "eval_id": "09d24abc",
-          "eval_layer": "post_tool",
-          "eval_name": "param_value_quality",
-          "trace_id": "0148b1ba-4af0-45d0-ab66-fd6805bf4dc4",
-          "span_id": null,
-          "passed": false,
-          "score": 0.733,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.209032",
-          "metadata": {}
-        },
-        {
-          "eval_id": "01ccbee7",
-          "eval_layer": "post_tool",
-          "eval_name": "result_interpretation",
-          "trace_id": "0148b1ba-4af0-45d0-ab66-fd6805bf4dc4",
-          "span_id": null,
-          "passed": false,
-          "score": 0.692,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.209052",
-          "metadata": {}
-        },
-        {
-          "eval_id": "3e78457e",
-          "eval_layer": "post_tool",
-          "eval_name": "next_step_decision",
-          "trace_id": "0148b1ba-4af0-45d0-ab66-fd6805bf4dc4",
-          "span_id": null,
-          "passed": false,
-          "score": 0.617,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.209074",
-          "metadata": {}
-        },
-        {
-          "eval_id": "9d9890f4",
-          "eval_layer": "e2e",
-          "eval_name": "goal_completion",
-          "trace_id": "0148b1ba-4af0-45d0-ab66-fd6805bf4dc4",
-          "span_id": null,
-          "passed": false,
-          "score": 0.675,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.209098",
-          "metadata": {}
-        },
-        {
-          "eval_id": "b67e834d",
-          "eval_layer": "e2e",
-          "eval_name": "efficiency",
-          "trace_id": "0148b1ba-4af0-45d0-ab66-fd6805bf4dc4",
-          "span_id": null,
-          "passed": false,
-          "score": 0.557,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "deterministic",
-          "timestamp": "2026-05-04T01:23:49.209118",
-          "metadata": {}
-        },
-        {
-          "eval_id": "3e91a3f3",
-          "eval_layer": "e2e",
-          "eval_name": "final_hallucination",
-          "trace_id": "0148b1ba-4af0-45d0-ab66-fd6805bf4dc4",
-          "span_id": null,
-          "passed": false,
-          "score": 0.715,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.209138",
-          "metadata": {}
-        }
-      ]
+      "eval_results": []
     },
     {
-      "trace_id": "33d238a1-ccf4-4851-ac37-0cfe303a8a32",
-      "query": "What is NVIDIA's current revenue trend and AI demand outlook?",
+      "trace_id": "62b6b647-5512-4fd1-98a1-b4e07829ffd4",
+      "query": "What is NVIDIA's current revenue trend and what does their stock performance indicate about AI demand?",
       "agent_version": "v1.0",
-      "golden_answer": "[demo golden answer]",
+      "golden_answer": "NVIDIA Q3 FY2024 revenue was $18.1B, up 206% YoY, driven by AI chip demand. The H100 GPU is the flagship. Strong revenue growth reflects surging enterprise AI adoption.",
       "expected_tools": [
         "web_search"
       ],
       "labels": {
-        "optimal_tool_calls": 1
+        "query": "What is NVIDIA's current revenue trend and what does their stock performance indicate about AI demand?",
+        "golden_answer": "NVIDIA Q3 FY2024 revenue was $18.1B, up 206% YoY, driven by AI chip demand. The H100 GPU is the flagship. Strong revenue growth reflects surging enterprise AI adoption.",
+        "expected_tools": [
+          "web_search"
+        ],
+        "optimal_tool_calls": 1,
+        "difficulty": "medium"
       },
-      "eval_results": [
-        {
-          "eval_id": "9e2276b3",
-          "eval_layer": "pre_tool",
-          "eval_name": "intent_clarity",
-          "trace_id": "33d238a1-ccf4-4851-ac37-0cfe303a8a32",
-          "span_id": null,
-          "passed": false,
-          "score": 0.75,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.267461",
-          "metadata": {}
-        },
-        {
-          "eval_id": "7f18aede",
-          "eval_layer": "pre_tool",
-          "eval_name": "tool_selection",
-          "trace_id": "33d238a1-ccf4-4851-ac37-0cfe303a8a32",
-          "span_id": null,
-          "passed": false,
-          "score": 0.618,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.267526",
-          "metadata": {}
-        },
-        {
-          "eval_id": "3bbcc83f",
-          "eval_layer": "pre_tool",
-          "eval_name": "pre_call_hallucination",
-          "trace_id": "33d238a1-ccf4-4851-ac37-0cfe303a8a32",
-          "span_id": null,
-          "passed": false,
-          "score": 0.609,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.267554",
-          "metadata": {}
-        },
-        {
-          "eval_id": "7765638f",
-          "eval_layer": "post_tool",
-          "eval_name": "param_schema_validation",
-          "trace_id": "33d238a1-ccf4-4851-ac37-0cfe303a8a32",
-          "span_id": null,
-          "passed": true,
-          "score": 0.974,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "deterministic",
-          "timestamp": "2026-05-04T01:23:49.267575",
-          "metadata": {}
-        },
-        {
-          "eval_id": "8e5b4a68",
-          "eval_layer": "post_tool",
-          "eval_name": "param_value_quality",
-          "trace_id": "33d238a1-ccf4-4851-ac37-0cfe303a8a32",
-          "span_id": null,
-          "passed": false,
-          "score": 0.596,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.267597",
-          "metadata": {}
-        },
-        {
-          "eval_id": "6e598638",
-          "eval_layer": "post_tool",
-          "eval_name": "result_interpretation",
-          "trace_id": "33d238a1-ccf4-4851-ac37-0cfe303a8a32",
-          "span_id": null,
-          "passed": false,
-          "score": 0.511,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.267615",
-          "metadata": {}
-        },
-        {
-          "eval_id": "ffb53397",
-          "eval_layer": "post_tool",
-          "eval_name": "next_step_decision",
-          "trace_id": "33d238a1-ccf4-4851-ac37-0cfe303a8a32",
-          "span_id": null,
-          "passed": true,
-          "score": 0.796,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.267635",
-          "metadata": {}
-        },
-        {
-          "eval_id": "c630d5bb",
-          "eval_layer": "e2e",
-          "eval_name": "goal_completion",
-          "trace_id": "33d238a1-ccf4-4851-ac37-0cfe303a8a32",
-          "span_id": null,
-          "passed": true,
-          "score": 0.706,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.267653",
-          "metadata": {}
-        },
-        {
-          "eval_id": "173b0a3b",
-          "eval_layer": "e2e",
-          "eval_name": "efficiency",
-          "trace_id": "33d238a1-ccf4-4851-ac37-0cfe303a8a32",
-          "span_id": null,
-          "passed": false,
-          "score": 0.44,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "deterministic",
-          "timestamp": "2026-05-04T01:23:49.267673",
-          "metadata": {}
-        },
-        {
-          "eval_id": "7193b669",
-          "eval_layer": "e2e",
-          "eval_name": "final_hallucination",
-          "trace_id": "33d238a1-ccf4-4851-ac37-0cfe303a8a32",
-          "span_id": null,
-          "passed": false,
-          "score": 0.641,
-          "reason": "Synthetic evaluation result for demo purposes.",
-          "eval_type": "llm_judge",
-          "timestamp": "2026-05-04T01:23:49.267692",
-          "metadata": {}
-        }
-      ]
+      "eval_results": []
     }
   ]
 }

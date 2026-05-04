@@ -3,13 +3,12 @@ runner.py — Orchestrates all evals across all three layers.
 Also handles deployment gate logic: a failing suite blocks a release.
 """
 from __future__ import annotations
-import json
-from pathlib import Path
 from typing import Dict, List, Optional
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich import box
+from rich.text import Text
 
 from framework.schema import Dataset, DatasetEntry, EvalResult, Trace
 from framework.tracer import Tracer
@@ -19,6 +18,12 @@ from framework.evaluators.e2e import run_e2e_evals
 from framework.score_history import append_run
 
 console = Console()
+
+
+def _emit(silent: bool, *args, **kwargs) -> None:
+    if not silent:
+        console.print(*args, **kwargs)
+
 
 # ── Deployment gate thresholds ─────────────────────────────────────────────────
 GATE_THRESHOLDS: Dict[str, float] = {
@@ -35,9 +40,54 @@ GATE_THRESHOLDS: Dict[str, float] = {
 }
 
 
+def _eval_detail_table(title: str, results: List[EvalResult], silent: bool = False) -> None:
+    """Rich table: every eval with score, pass, type, and judge/deterministic reason."""
+    if silent or not results:
+        return
+    table = Table(
+        title=title,
+        box=box.MINIMAL_DOUBLE_HEAD,
+        show_header=True,
+        header_style="bold cyan",
+        expand=True,
+        title_style="bold white",
+    )
+    table.add_column("Eval", style="cyan", no_wrap=True, max_width=22)
+    table.add_column("Layer", justify="center", max_width=10)
+    table.add_column("Score", justify="right", max_width=6)
+    table.add_column("Pass", justify="center", max_width=5)
+    table.add_column("Type", max_width=14)
+    table.add_column("Reason / detail", overflow="fold", max_width=72)
+
+    for r in results:
+        pstyle = "green" if r.passed else "red"
+        score_txt = f"[{pstyle}]{r.score:.2f}[/{pstyle}]"
+        pass_txt = "[green]yes[/green]" if r.passed else "[red]no[/red]"
+        reason = (r.reason or "").strip()
+        if len(reason) > 600:
+            reason = reason[:600] + "…"
+        table.add_row(
+            r.eval_name,
+            r.eval_layer,
+            score_txt,
+            pass_txt,
+            r.eval_type,
+            reason,
+        )
+    console.print(table)
+    console.print()
+
+
 class EvalRunner:
-    def __init__(self, tracer: Optional[Tracer] = None):
+    def __init__(
+        self,
+        tracer: Optional[Tracer] = None,
+        verbose_eval: bool = False,
+        silent: bool = False,
+    ):
         self.tracer = tracer or Tracer()
+        self.verbose_eval = verbose_eval
+        self.silent = silent
 
     def run_all_evals(
         self,
@@ -47,24 +97,43 @@ class EvalRunner:
     ) -> List[EvalResult]:
         """Run all 3 layers of evals for a single trace."""
         all_results: List[EvalResult] = []
+        silent = self.silent
 
-        # Layer 1 — pre-tool
-        console.print(f"  [cyan]→ Layer 1 (pre-tool)[/cyan]", end=" ")
+        _emit(silent, f"  [cyan]{'──' if self.verbose_eval else '→'} Layer 1 · Pre-tool[/cyan]", end="")
+        if not self.verbose_eval:
+            _emit(silent, end=" ")
+        else:
+            _emit(silent, "")
         pre = run_pre_tool_evals(trace.trace_id, trace.query, trace.spans)
         all_results.extend(pre)
-        console.print(f"[green]{len(pre)} evals[/green]")
+        if self.verbose_eval:
+            _eval_detail_table("Layer 1 · Pre-tool (reasoning & tool choice)", pre, silent=silent)
+        else:
+            _emit(silent, f"[green]{len(pre)} evals[/green]")
 
-        # Layer 2 — post-tool
-        console.print(f"  [cyan]→ Layer 2 (post-tool)[/cyan]", end=" ")
+        _emit(silent, f"  [cyan]{'──' if self.verbose_eval else '→'} Layer 2 · Post-tool[/cyan]", end="")
+        if not self.verbose_eval:
+            _emit(silent, end=" ")
+        else:
+            _emit(silent, "")
         post = run_post_tool_evals(trace.trace_id, trace.query, trace.spans)
         all_results.extend(post)
-        console.print(f"[green]{len(post)} evals[/green]")
+        if self.verbose_eval:
+            _eval_detail_table("Layer 2 · Post-tool (params & interpretation)", post, silent=silent)
+        else:
+            _emit(silent, f"[green]{len(post)} evals[/green]")
 
-        # Layer 3 — e2e
-        console.print(f"  [cyan]→ Layer 3 (e2e)[/cyan]", end=" ")
+        _emit(silent, f"  [cyan]{'──' if self.verbose_eval else '→'} Layer 3 · End-to-end[/cyan]", end="")
+        if not self.verbose_eval:
+            _emit(silent, end=" ")
+        else:
+            _emit(silent, "")
         e2e = run_e2e_evals(trace, golden_answer, optimal_tool_calls)
         all_results.extend(e2e)
-        console.print(f"[green]{len(e2e)} evals[/green]")
+        if self.verbose_eval:
+            _eval_detail_table("Layer 3 · End-to-end (goal & grounding)", e2e, silent=silent)
+        else:
+            _emit(silent, f"[green]{len(e2e)} evals[/green]")
 
         # Persist
         self.tracer.save_eval_results(all_results)
@@ -77,18 +146,33 @@ class EvalRunner:
         traces: Dict[str, Trace],
     ) -> Dict[str, float]:
         """Run the full eval suite for a dataset version. Returns aggregated scores."""
-        console.print(
-            Panel(f"[bold]Running eval suite for agent version: {agent_version}[/bold]",
-                  style="blue")
+        silent = self.silent
+        _emit(
+            silent,
+            Panel(
+                f"[bold]Eval suite · agent version:[/bold] [yellow]{agent_version}[/yellow]",
+                style="blue",
+                padding=(1, 2),
+            ),
         )
         all_results: List[EvalResult] = []
 
-        for entry in entries:
+        for idx, entry in enumerate(entries, 1):
             trace = traces.get(entry.trace_id)
             if not trace:
-                console.print(f"  [yellow]⚠ No trace found for {entry.trace_id}[/yellow]")
+                _emit(silent, f"  [yellow]⚠ No trace found for {entry.trace_id}[/yellow]")
                 continue
-            console.print(f"\n[bold]Query:[/bold] {entry.query[:70]}...")
+            _emit(silent, "")
+            _emit(
+                silent,
+                Panel(
+                    Text(entry.query, overflow="fold"),
+                    title=f"[bold]Evaluating trace {idx}/{len(entries)}[/bold]",
+                    subtitle=f"[dim]{entry.trace_id}[/dim]",
+                    border_style="magenta",
+                    padding=(1, 2),
+                ),
+            )
             results = self.run_all_evals(
                 trace,
                 golden_answer=entry.golden_answer,
@@ -124,6 +208,8 @@ class EvalRunner:
         return len(failures) == 0, failures
 
     def print_score_table(self, version: str, scores: Dict[str, dict]) -> None:
+        if self.silent:
+            return
         table = Table(
             title=f"Eval Scores — Agent {version}",
             box=box.ROUNDED,

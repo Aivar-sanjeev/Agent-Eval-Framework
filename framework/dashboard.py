@@ -564,7 +564,7 @@ def _render_html(
   <div class="header-top">
     <div>
       <h1>Agent <span>Eval</span> Framework</h1>
-      <div class="header-sub">Multi-layer evaluation dashboard · NVIDIA NIM powered</div>
+      <div class="header-sub">Multi-layer evaluation dashboard · Groq-powered judges</div>
       <div class="badges">
         <span class="badge badge-versions">🔢 {len(versions)} versions compared</span>
         <span class="badge badge-evals">⚡ {len(all_evals)} evals · 3 layers</span>
@@ -630,7 +630,7 @@ def _render_html(
 </div>
 
 <div class="footer">
-  <span>Agent Eval Framework · JSON-backed · NVIDIA NIM judge</span>
+  <span>Agent Eval Framework · JSON-backed · Groq judge</span>
   <span>Generated automatically · {len(versions)} versions · {len(all_evals)} evals</span>
 </div>
 

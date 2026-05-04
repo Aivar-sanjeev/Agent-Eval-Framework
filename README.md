@@ -4,14 +4,14 @@ Multi-layer evaluation for **tool-using agents**: measure quality **before** too
 
 The agent implementation is **decoupled** from evaluators: you register evals in `evals/eval_definitions.py` and implement logic under `framework/evaluators/`. The demo agent in `agent/research_agent.py` only emits structured **traces**; it does not import eval code.
 
-Inference and LLM-as-judge calls use **NVIDIA NIM** (OpenAI-compatible `chat/completions` at `integrate.api.nvidia.com`).
+Inference and LLM-as-judge calls use **Groq**’s OpenAI-compatible **`/chat/completions`** API (`https://api.groq.com/openai/v1`). Every completion call (agent + judges) goes through **`framework/openai_retry.py`** so HTTP **429** responses retry with exponential backoff.
 
 ## Features
 
 | Capability | How |
 |------------|-----|
 | Framework-agnostic traces | Pydantic models in `framework/schema.py` — wire any runtime (LangChain, Bedrock, custom) by producing the same JSON shape |
-| Deterministic + model evals | Schema checks + NVIDIA-backed judges |
+| Deterministic + model evals | Schema checks + Groq-backed judges |
 | Versioned datasets | `framework/dataset.py` → `data/datasets/v{version}.json` |
 | Queryable traces | JSON source of truth + **SQLite** index (`data/traces_index.db`) with `query_traces()` |
 | Score history | Append-only `data/score_history.jsonl` on each suite run — dashboard shows recent runs |
@@ -25,21 +25,28 @@ cd agent_eval_framework
 python -m venv .venv
 .venv\Scripts\activate   # Windows
 pip install -r requirements.txt
-copy .env.example .env   # set NVIDIA_API_KEY
+copy .env.example .env   # set GROQ_API_KEY ( https://console.groq.com/keys )
 ```
 
 Environment variables:
 
 | Variable | Purpose |
 |----------|---------|
-| `NVIDIA_API_KEY` | Required for the demo agent and LLM judges |
-| `NVIDIA_BASE_URL` | Default `https://integrate.api.nvidia.com/v1` |
-| `NVIDIA_AGENT_MODEL` | Model id for the research agent (default `meta/llama-3.3-70b-instruct`) |
-| `NVIDIA_JUDGE_MODEL` | Model id for eval judges (same default) |
+| `GROQ_API_KEY` | Required for the demo agent and LLM judges |
+| `GROQ_BASE_URL` | Default `https://api.groq.com/openai/v1` |
+| `GROQ_AGENT_MODEL` | Groq model id for the research agent (default `llama-3.3-70b-versatile`) |
+| `GROQ_JUDGE_MODEL` | Groq model id for eval judges (same default; try `llama-3.1-8b-instant` for cheaper judges) |
+| `GROQ_REQUEST_DELAY_MS` | Optional pause **before each** Groq call (agent + judge), e.g. `80`, to reduce burst **429**s |
+| `GROQ_MAX_RETRIES` | Max retries on 429 / connection errors (default `10`) |
+| `GROQ_RETRY_BASE_SEC` | Base backoff seconds for retries (default `2.0`) |
+
+If you see **`tool_use_failed` / tool call validation** from Groq, the stack already uses strict JSON schemas, `parallel_tool_calls=false`, and temperature `0` on tool turns. Try another Groq model via `GROQ_AGENT_MODEL` (e.g. `openai/gpt-oss-20b` often behaves well with tools).
+
+**Interpretation / final-answer turns:** Groq can reject requests if the model emits tools while `tool_choice` is `none`. The agent **flattens** prior `assistant` + `tool` messages into plain text for those calls (see `_flatten_for_text_completion` in `agent/research_agent.py`).
 
 ## Quickstart
 
-**Full demo** (runs agent v1.0 and v2.0 on five benchmark queries, evaluates all layers, writes datasets, updates score history, renders HTML):
+**Full demo** — Rich terminal UI: prints **available tools**, **benchmark queries**, **eval registry**, then runs agents **query-by-query** with trace summaries, then runs evals **with full judge reasons** per layer:
 
 ```bash
 python run_demo.py
@@ -47,7 +54,20 @@ python run_demo.py
 
 Open `reports/dashboard.html` for scores, deployment gate status, **recent eval suite runs**, and charts.
 
-**Without GPU/API** — synthetic dashboard only:
+**Browser UI** (interactive single-query run + eval table + CSV export):
+
+```bash
+pip install streamlit   # if not already installed
+streamlit run streamlit_app.py
+```
+
+After a run you get a **trace summary** (spans, tool calls, trace id), the **final answer** (or a note if the agent hit the step limit), and a sortable **evaluation table** with per-eval scores, gate thresholds, and **LLM judge reasons**.
+
+### Sample output (Streamlit)
+
+![Streamlit interactive run: agent version, query, trace summary, and evaluation details with judge reasons](Screenshot/image.png)
+
+**Without API** — synthetic dashboard only:
 
 ```bash
 python generate_demo_dashboard.py
@@ -94,15 +114,19 @@ Production sampling workflow (conceptual): export traces → label in UI or spre
 
 ```
 agent_eval_framework/
-  agent/research_agent.py    # NVIDIA NIM demo agent + tool traces
+  Screenshot/image.png        # Sample UI (referenced from README)
+  streamlit_app.py           # Browser UI for single-query runs + eval table
+  agent/research_agent.py    # Groq demo agent + tool traces
   evals/eval_definitions.py  # Eval registry (documentation + thresholds)
   framework/
     schema.py                # Trace, spans, EvalResult, Dataset
+    settings.py              # Groq URL + models + retry tuning
+    openai_retry.py          # Shared 429 retry for agent + judges
     tracer.py                # JSON persistence + SQLite index
     trace_index.py           # Queryable span index
     runner.py                # Suite orchestration + deployment gate + score_history append
     dataset.py               # Versioned datasets
-    llm_judge.py             # NVIDIA NIM judge helper
+    llm_judge.py             # Groq judge helper
     dashboard.py             # Static HTML report
     cli.py                   # Gate, export, query, dashboard
     integrations/            # Phoenix + Braintrust-compat exporters
