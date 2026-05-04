@@ -13,6 +13,12 @@ import json
 import os
 import sys
 from pathlib import Path
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).parent / ".env")
+except ImportError:
+    pass
 from rich.console import Console
 from rich.panel import Panel
 from rich.rule import Rule

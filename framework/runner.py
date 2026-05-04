@@ -16,6 +16,7 @@ from framework.tracer import Tracer
 from framework.evaluators.pre_tool import run_pre_tool_evals
 from framework.evaluators.post_tool import run_post_tool_evals
 from framework.evaluators.e2e import run_e2e_evals
+from framework.score_history import append_run
 
 console = Console()
 
@@ -95,7 +96,16 @@ class EvalRunner:
             )
             all_results.extend(results)
 
-        return self.tracer.compute_version_scores(agent_version)
+        scores = self.tracer.compute_version_scores(agent_version)
+        gate_passed, failures = self.check_deployment_gate(scores)
+        append_run(
+            agent_version=agent_version,
+            scores=scores,
+            gate_passed=gate_passed,
+            dataset_version=agent_version,
+            metadata={"gate_failures": failures},
+        )
+        return scores
 
     def check_deployment_gate(self, scores: Dict[str, dict]) -> tuple[bool, List[str]]:
         """

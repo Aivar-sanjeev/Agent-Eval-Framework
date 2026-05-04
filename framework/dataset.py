@@ -20,15 +20,15 @@ class DatasetManager:
         return self.data_dir / f"v{version}.json"
 
     def save(self, dataset: Dataset) -> None:
-        with open(self._path(dataset.version), "w") as f:
-            json.dump(dataset.model_dump(), f, indent=2)
+        with open(self._path(dataset.version), "w", encoding="utf-8") as f:
+            json.dump(dataset.model_dump(), f, indent=2, ensure_ascii=False)
         print(f"  Dataset v{dataset.version} saved ({len(dataset.entries)} entries)")
 
     def load(self, version: str) -> Optional[Dataset]:
         path = self._path(version)
         if not path.exists():
             return None
-        with open(path) as f:
+        with open(path, encoding="utf-8") as f:
             return Dataset(**json.load(f))
 
     def list_versions(self) -> List[str]:
