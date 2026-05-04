@@ -85,6 +85,23 @@ python generate_demo_dashboard.py
 
 **Repository:** [github.com/Aivar-sanjeev/Agent-Eval-Framework](https://github.com/Aivar-sanjeev/Agent-Eval-Framework)
 
+### Project duration (`main`: first commit → latest)
+
+| | |
+|---|---|
+| **First commit** (root of `main`) | `e8be8b0` — **2026-05-04 01:17:46 UTC** |
+| **Latest commit** (`main` tip) | `101ae4c` — **2026-05-04 06:28:27 UTC** |
+| **Elapsed (root → tip)** | **5 h 10 m 41 s** (18,641 s) across **8** commits on `main` |
+
+Recompute (PowerShell, repo root):
+
+```powershell
+$root = git rev-list --max-parents=0 main; $head = git rev-parse main
+$t0 = [int](git show -s --format=%at $root); $t1 = [int](git show -s --format=%at $head)
+$ts = [TimeSpan]::FromSeconds($t1 - $t0)
+"Elapsed: {0}d {1}h {2}m {3}s  (commits: {4})" -f $ts.Days, $ts.Hours, $ts.Minutes, $ts.Seconds, (git rev-list --count main)
+```
+
 Use the table for each **`python run_demo.py`** suite, **Streamlit** interactive run, or **`python -m framework.cli …`** invocation. Timestamps should be **UTC**; duration is **wall-clock** end-to-end.
 
 ### Tech stack
