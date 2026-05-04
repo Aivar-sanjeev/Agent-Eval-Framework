@@ -93,6 +93,8 @@ python generate_demo_dashboard.py
 | **Latest commit** (`main` tip) | `dc1a40a` — **2026-05-04 06:39:30 UTC** |
 | **Elapsed (root → tip)** | **5 h 21 m 44 s** (19,304 s) across **9** commits on `main` |
 
+*Tip hash and “latest” time advance with new commits; the script below always matches your clone.*
+
 Recompute (PowerShell, repo root):
 
 ```powershell
