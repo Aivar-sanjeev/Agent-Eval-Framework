@@ -81,6 +81,31 @@ Screen recording of the Streamlit **interactive run** (agent + full eval suite) 
 python generate_demo_dashboard.py
 ```
 
+## Run metadata (models, duration, tech stack)
+
+**Repository:** [github.com/Aivar-sanjeev/Agent-Eval-Framework](https://github.com/Aivar-sanjeev/Agent-Eval-Framework)
+
+Use the table for each **`python run_demo.py`** suite, **Streamlit** interactive run, or **`python -m framework.cli …`** invocation. Timestamps should be **UTC**; duration is **wall-clock** end-to-end.
+
+### Tech stack
+
+Python 3, **Groq** (`api.groq.com` OpenAI-compatible), **Pydantic**, **Rich** (demo UI), **Streamlit** (optional browser UI), **SQLite** trace index, **HTML** dashboard.
+
+### Models used (from `.env`)
+
+| Variable | Default | Notes |
+|----------|---------|--------|
+| `GROQ_AGENT_MODEL` | `llama-3.3-70b-versatile` | Demo agent tool calls. |
+| `GROQ_JUDGE_MODEL` | `llama-3.3-70b-versatile` | LLM-as-judge; can use `llama-3.1-8b-instant` for cost. |
+
+### Run log (fill per execution)
+
+| Task / run | Command | Models used | Tech stack | Started (UTC) | Finished (UTC) | Wall duration |
+|------------|---------|-------------|------------|---------------|----------------|-----------------|
+| Full terminal demo | `python run_demo.py` | `GROQ_AGENT_MODEL` + `GROQ_JUDGE_MODEL` | Rich + Groq + eval framework | — | — | — |
+| Streamlit UI | `streamlit run streamlit_app.py` | same | Streamlit + Groq | — | — | — |
+| Gate only | `python -m framework.cli gate --version v2.0` | judges as configured | CLI + Groq | — | — | — |
+
 ## CLI
 
 Run from this directory (`agent_eval_framework` on `PYTHONPATH`):
