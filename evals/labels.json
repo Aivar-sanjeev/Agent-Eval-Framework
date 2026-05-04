@@ -1,0 +1,40 @@
+{
+  "_comment": "Human-curated labels for benchmark queries. Keyed by query fingerprint.",
+  "queries": [
+    {
+      "query": "What is the current CO2 level in the atmosphere and how has it changed?",
+      "golden_answer": "CO2 levels have reached approximately 421 ppm in 2023, up from 280 ppm pre-industrial levels. Global temperatures have risen ~1.1°C since pre-industrial times.",
+      "expected_tools": ["web_search"],
+      "optimal_tool_calls": 1,
+      "difficulty": "easy"
+    },
+    {
+      "query": "If I invest $5000 at 7% annual compound interest for 10 years, how much will I have?",
+      "golden_answer": "After 10 years at 7% compound interest, $5000 grows to approximately $9,835.76. Formula: 5000 * (1.07)^10.",
+      "expected_tools": ["calculator"],
+      "optimal_tool_calls": 1,
+      "difficulty": "easy"
+    },
+    {
+      "query": "What's the weather in Tokyo and what is 25 degrees Celsius in Fahrenheit?",
+      "golden_answer": "Tokyo weather: Overcast, 18°C, 65% humidity. 25°C = 77.00°F.",
+      "expected_tools": ["weather_lookup", "unit_converter"],
+      "optimal_tool_calls": 2,
+      "difficulty": "medium"
+    },
+    {
+      "query": "How far is a marathon in miles, and how long would it take to run at 6 minutes per km?",
+      "golden_answer": "A marathon is 42.195 km = 26.22 miles. At 6 min/km, it takes 42.195 * 6 = ~253 minutes (~4h 13m).",
+      "expected_tools": ["unit_converter", "calculator"],
+      "optimal_tool_calls": 2,
+      "difficulty": "medium"
+    },
+    {
+      "query": "What is NVIDIA's current revenue trend and what does their stock performance indicate about AI demand?",
+      "golden_answer": "NVIDIA Q3 FY2024 revenue was $18.1B, up 206% YoY, driven by AI chip demand. The H100 GPU is the flagship. Strong revenue growth reflects surging enterprise AI adoption.",
+      "expected_tools": ["web_search"],
+      "optimal_tool_calls": 1,
+      "difficulty": "medium"
+    }
+  ]
+}

@@ -1,0 +1,728 @@
+{
+  "dataset_id": "613aec38",
+  "version": "v1.0",
+  "description": "Demo dataset v1.0",
+  "created_at": "2026-05-04T00:52:32.718606",
+  "entries": [
+    {
+      "trace_id": "3be0623c-69e0-46eb-8180-b518a8e98b54",
+      "query": "What is the current CO2 level in the atmosphere and how has it changed?",
+      "agent_version": "v1.0",
+      "golden_answer": "[demo golden answer]",
+      "expected_tools": [
+        "web_search"
+      ],
+      "labels": {
+        "optimal_tool_calls": 1
+      },
+      "eval_results": [
+        {
+          "eval_id": "e5ef4eb8",
+          "eval_layer": "pre_tool",
+          "eval_name": "intent_clarity",
+          "trace_id": "3be0623c-69e0-46eb-8180-b518a8e98b54",
+          "span_id": null,
+          "passed": false,
+          "score": 0.709,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.712609",
+          "metadata": {}
+        },
+        {
+          "eval_id": "f94458f6",
+          "eval_layer": "pre_tool",
+          "eval_name": "tool_selection",
+          "trace_id": "3be0623c-69e0-46eb-8180-b518a8e98b54",
+          "span_id": null,
+          "passed": false,
+          "score": 0.764,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.712631",
+          "metadata": {}
+        },
+        {
+          "eval_id": "039a47cd",
+          "eval_layer": "pre_tool",
+          "eval_name": "pre_call_hallucination",
+          "trace_id": "3be0623c-69e0-46eb-8180-b518a8e98b54",
+          "span_id": null,
+          "passed": false,
+          "score": 0.687,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.712663",
+          "metadata": {}
+        },
+        {
+          "eval_id": "bb5b21e4",
+          "eval_layer": "post_tool",
+          "eval_name": "param_schema_validation",
+          "trace_id": "3be0623c-69e0-46eb-8180-b518a8e98b54",
+          "span_id": null,
+          "passed": false,
+          "score": 0.76,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "deterministic",
+          "timestamp": "2026-05-04T00:52:32.712676",
+          "metadata": {}
+        },
+        {
+          "eval_id": "f24f7b33",
+          "eval_layer": "post_tool",
+          "eval_name": "param_value_quality",
+          "trace_id": "3be0623c-69e0-46eb-8180-b518a8e98b54",
+          "span_id": null,
+          "passed": false,
+          "score": 0.69,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.712687",
+          "metadata": {}
+        },
+        {
+          "eval_id": "9a8279f6",
+          "eval_layer": "post_tool",
+          "eval_name": "result_interpretation",
+          "trace_id": "3be0623c-69e0-46eb-8180-b518a8e98b54",
+          "span_id": null,
+          "passed": false,
+          "score": 0.641,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.712695",
+          "metadata": {}
+        },
+        {
+          "eval_id": "705e66d4",
+          "eval_layer": "post_tool",
+          "eval_name": "next_step_decision",
+          "trace_id": "3be0623c-69e0-46eb-8180-b518a8e98b54",
+          "span_id": null,
+          "passed": false,
+          "score": 0.602,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.712705",
+          "metadata": {}
+        },
+        {
+          "eval_id": "592210c0",
+          "eval_layer": "e2e",
+          "eval_name": "goal_completion",
+          "trace_id": "3be0623c-69e0-46eb-8180-b518a8e98b54",
+          "span_id": null,
+          "passed": false,
+          "score": 0.636,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.712714",
+          "metadata": {}
+        },
+        {
+          "eval_id": "7e6d271a",
+          "eval_layer": "e2e",
+          "eval_name": "efficiency",
+          "trace_id": "3be0623c-69e0-46eb-8180-b518a8e98b54",
+          "span_id": null,
+          "passed": false,
+          "score": 0.585,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "deterministic",
+          "timestamp": "2026-05-04T00:52:32.712725",
+          "metadata": {}
+        },
+        {
+          "eval_id": "645a7b76",
+          "eval_layer": "e2e",
+          "eval_name": "final_hallucination",
+          "trace_id": "3be0623c-69e0-46eb-8180-b518a8e98b54",
+          "span_id": null,
+          "passed": true,
+          "score": 0.8,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.712733",
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "trace_id": "fb70bd6c-4730-4f62-a4d1-f80fcc1892a8",
+      "query": "If I invest $5000 at 7% annual compound interest for 10 years, how much will I have?",
+      "agent_version": "v1.0",
+      "golden_answer": "[demo golden answer]",
+      "expected_tools": [
+        "web_search"
+      ],
+      "labels": {
+        "optimal_tool_calls": 1
+      },
+      "eval_results": [
+        {
+          "eval_id": "5e588d5b",
+          "eval_layer": "pre_tool",
+          "eval_name": "intent_clarity",
+          "trace_id": "fb70bd6c-4730-4f62-a4d1-f80fcc1892a8",
+          "span_id": null,
+          "passed": false,
+          "score": 0.687,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.713379",
+          "metadata": {}
+        },
+        {
+          "eval_id": "4ef78a89",
+          "eval_layer": "pre_tool",
+          "eval_name": "tool_selection",
+          "trace_id": "fb70bd6c-4730-4f62-a4d1-f80fcc1892a8",
+          "span_id": null,
+          "passed": false,
+          "score": 0.498,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.713396",
+          "metadata": {}
+        },
+        {
+          "eval_id": "cc0fbeab",
+          "eval_layer": "pre_tool",
+          "eval_name": "pre_call_hallucination",
+          "trace_id": "fb70bd6c-4730-4f62-a4d1-f80fcc1892a8",
+          "span_id": null,
+          "passed": false,
+          "score": 0.604,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.713408",
+          "metadata": {}
+        },
+        {
+          "eval_id": "a1a20922",
+          "eval_layer": "post_tool",
+          "eval_name": "param_schema_validation",
+          "trace_id": "fb70bd6c-4730-4f62-a4d1-f80fcc1892a8",
+          "span_id": null,
+          "passed": false,
+          "score": 0.922,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "deterministic",
+          "timestamp": "2026-05-04T00:52:32.713482",
+          "metadata": {}
+        },
+        {
+          "eval_id": "9173f1b7",
+          "eval_layer": "post_tool",
+          "eval_name": "param_value_quality",
+          "trace_id": "fb70bd6c-4730-4f62-a4d1-f80fcc1892a8",
+          "span_id": null,
+          "passed": false,
+          "score": 0.607,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.713498",
+          "metadata": {}
+        },
+        {
+          "eval_id": "3900def3",
+          "eval_layer": "post_tool",
+          "eval_name": "result_interpretation",
+          "trace_id": "fb70bd6c-4730-4f62-a4d1-f80fcc1892a8",
+          "span_id": null,
+          "passed": true,
+          "score": 0.888,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.713510",
+          "metadata": {}
+        },
+        {
+          "eval_id": "2b191c18",
+          "eval_layer": "post_tool",
+          "eval_name": "next_step_decision",
+          "trace_id": "fb70bd6c-4730-4f62-a4d1-f80fcc1892a8",
+          "span_id": null,
+          "passed": false,
+          "score": 0.634,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.713520",
+          "metadata": {}
+        },
+        {
+          "eval_id": "6eac033f",
+          "eval_layer": "e2e",
+          "eval_name": "goal_completion",
+          "trace_id": "fb70bd6c-4730-4f62-a4d1-f80fcc1892a8",
+          "span_id": null,
+          "passed": false,
+          "score": 0.538,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.713529",
+          "metadata": {}
+        },
+        {
+          "eval_id": "03b8af4e",
+          "eval_layer": "e2e",
+          "eval_name": "efficiency",
+          "trace_id": "fb70bd6c-4730-4f62-a4d1-f80fcc1892a8",
+          "span_id": null,
+          "passed": false,
+          "score": 0.443,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "deterministic",
+          "timestamp": "2026-05-04T00:52:32.713538",
+          "metadata": {}
+        },
+        {
+          "eval_id": "a39ab695",
+          "eval_layer": "e2e",
+          "eval_name": "final_hallucination",
+          "trace_id": "fb70bd6c-4730-4f62-a4d1-f80fcc1892a8",
+          "span_id": null,
+          "passed": false,
+          "score": 0.705,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.713546",
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "trace_id": "f6a5e472-2e6d-4a78-9c67-1eeb7a571003",
+      "query": "What's the weather in Tokyo and what is 25\u00b0C in Fahrenheit?",
+      "agent_version": "v1.0",
+      "golden_answer": "[demo golden answer]",
+      "expected_tools": [
+        "web_search"
+      ],
+      "labels": {
+        "optimal_tool_calls": 1
+      },
+      "eval_results": [
+        {
+          "eval_id": "c3a9e1df",
+          "eval_layer": "pre_tool",
+          "eval_name": "intent_clarity",
+          "trace_id": "f6a5e472-2e6d-4a78-9c67-1eeb7a571003",
+          "span_id": null,
+          "passed": false,
+          "score": 0.697,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.714334",
+          "metadata": {}
+        },
+        {
+          "eval_id": "9b0dfea6",
+          "eval_layer": "pre_tool",
+          "eval_name": "tool_selection",
+          "trace_id": "f6a5e472-2e6d-4a78-9c67-1eeb7a571003",
+          "span_id": null,
+          "passed": false,
+          "score": 0.725,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.714354",
+          "metadata": {}
+        },
+        {
+          "eval_id": "485832bd",
+          "eval_layer": "pre_tool",
+          "eval_name": "pre_call_hallucination",
+          "trace_id": "f6a5e472-2e6d-4a78-9c67-1eeb7a571003",
+          "span_id": null,
+          "passed": true,
+          "score": 0.859,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.714368",
+          "metadata": {}
+        },
+        {
+          "eval_id": "6ea1a02f",
+          "eval_layer": "post_tool",
+          "eval_name": "param_schema_validation",
+          "trace_id": "f6a5e472-2e6d-4a78-9c67-1eeb7a571003",
+          "span_id": null,
+          "passed": true,
+          "score": 0.969,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "deterministic",
+          "timestamp": "2026-05-04T00:52:32.714378",
+          "metadata": {}
+        },
+        {
+          "eval_id": "06967353",
+          "eval_layer": "post_tool",
+          "eval_name": "param_value_quality",
+          "trace_id": "f6a5e472-2e6d-4a78-9c67-1eeb7a571003",
+          "span_id": null,
+          "passed": false,
+          "score": 0.477,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.714388",
+          "metadata": {}
+        },
+        {
+          "eval_id": "3727d2b9",
+          "eval_layer": "post_tool",
+          "eval_name": "result_interpretation",
+          "trace_id": "f6a5e472-2e6d-4a78-9c67-1eeb7a571003",
+          "span_id": null,
+          "passed": false,
+          "score": 0.549,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.714398",
+          "metadata": {}
+        },
+        {
+          "eval_id": "f8c65913",
+          "eval_layer": "post_tool",
+          "eval_name": "next_step_decision",
+          "trace_id": "f6a5e472-2e6d-4a78-9c67-1eeb7a571003",
+          "span_id": null,
+          "passed": false,
+          "score": 0.61,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.714409",
+          "metadata": {}
+        },
+        {
+          "eval_id": "8ea44b57",
+          "eval_layer": "e2e",
+          "eval_name": "goal_completion",
+          "trace_id": "f6a5e472-2e6d-4a78-9c67-1eeb7a571003",
+          "span_id": null,
+          "passed": false,
+          "score": 0.448,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.714419",
+          "metadata": {}
+        },
+        {
+          "eval_id": "75ae3dd9",
+          "eval_layer": "e2e",
+          "eval_name": "efficiency",
+          "trace_id": "f6a5e472-2e6d-4a78-9c67-1eeb7a571003",
+          "span_id": null,
+          "passed": true,
+          "score": 0.694,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "deterministic",
+          "timestamp": "2026-05-04T00:52:32.714464",
+          "metadata": {}
+        },
+        {
+          "eval_id": "1ca343c9",
+          "eval_layer": "e2e",
+          "eval_name": "final_hallucination",
+          "trace_id": "f6a5e472-2e6d-4a78-9c67-1eeb7a571003",
+          "span_id": null,
+          "passed": false,
+          "score": 0.64,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.714485",
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "trace_id": "a14f2ef2-4d76-437e-9e2d-5ea6f3b5eee3",
+      "query": "How far is a marathon in miles, and how long to run at 6 min/km?",
+      "agent_version": "v1.0",
+      "golden_answer": "[demo golden answer]",
+      "expected_tools": [
+        "web_search"
+      ],
+      "labels": {
+        "optimal_tool_calls": 1
+      },
+      "eval_results": [
+        {
+          "eval_id": "4012391d",
+          "eval_layer": "pre_tool",
+          "eval_name": "intent_clarity",
+          "trace_id": "a14f2ef2-4d76-437e-9e2d-5ea6f3b5eee3",
+          "span_id": null,
+          "passed": false,
+          "score": 0.574,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.715874",
+          "metadata": {}
+        },
+        {
+          "eval_id": "f797b274",
+          "eval_layer": "pre_tool",
+          "eval_name": "tool_selection",
+          "trace_id": "a14f2ef2-4d76-437e-9e2d-5ea6f3b5eee3",
+          "span_id": null,
+          "passed": false,
+          "score": 0.518,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.715908",
+          "metadata": {}
+        },
+        {
+          "eval_id": "9d715d75",
+          "eval_layer": "pre_tool",
+          "eval_name": "pre_call_hallucination",
+          "trace_id": "a14f2ef2-4d76-437e-9e2d-5ea6f3b5eee3",
+          "span_id": null,
+          "passed": false,
+          "score": 0.562,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.715927",
+          "metadata": {}
+        },
+        {
+          "eval_id": "644dada1",
+          "eval_layer": "post_tool",
+          "eval_name": "param_schema_validation",
+          "trace_id": "a14f2ef2-4d76-437e-9e2d-5ea6f3b5eee3",
+          "span_id": null,
+          "passed": false,
+          "score": 0.822,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "deterministic",
+          "timestamp": "2026-05-04T00:52:32.715943",
+          "metadata": {}
+        },
+        {
+          "eval_id": "040af772",
+          "eval_layer": "post_tool",
+          "eval_name": "param_value_quality",
+          "trace_id": "a14f2ef2-4d76-437e-9e2d-5ea6f3b5eee3",
+          "span_id": null,
+          "passed": false,
+          "score": 0.733,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.715959",
+          "metadata": {}
+        },
+        {
+          "eval_id": "6066c80d",
+          "eval_layer": "post_tool",
+          "eval_name": "result_interpretation",
+          "trace_id": "a14f2ef2-4d76-437e-9e2d-5ea6f3b5eee3",
+          "span_id": null,
+          "passed": false,
+          "score": 0.692,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.715973",
+          "metadata": {}
+        },
+        {
+          "eval_id": "d354ed97",
+          "eval_layer": "post_tool",
+          "eval_name": "next_step_decision",
+          "trace_id": "a14f2ef2-4d76-437e-9e2d-5ea6f3b5eee3",
+          "span_id": null,
+          "passed": false,
+          "score": 0.617,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.715987",
+          "metadata": {}
+        },
+        {
+          "eval_id": "d9cd9533",
+          "eval_layer": "e2e",
+          "eval_name": "goal_completion",
+          "trace_id": "a14f2ef2-4d76-437e-9e2d-5ea6f3b5eee3",
+          "span_id": null,
+          "passed": false,
+          "score": 0.675,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.716001",
+          "metadata": {}
+        },
+        {
+          "eval_id": "e015ee11",
+          "eval_layer": "e2e",
+          "eval_name": "efficiency",
+          "trace_id": "a14f2ef2-4d76-437e-9e2d-5ea6f3b5eee3",
+          "span_id": null,
+          "passed": false,
+          "score": 0.557,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "deterministic",
+          "timestamp": "2026-05-04T00:52:32.716053",
+          "metadata": {}
+        },
+        {
+          "eval_id": "1380a6ca",
+          "eval_layer": "e2e",
+          "eval_name": "final_hallucination",
+          "trace_id": "a14f2ef2-4d76-437e-9e2d-5ea6f3b5eee3",
+          "span_id": null,
+          "passed": false,
+          "score": 0.715,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.716074",
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "trace_id": "aa2c0925-61da-4991-bacc-472c960bfa47",
+      "query": "What is NVIDIA's current revenue trend and AI demand outlook?",
+      "agent_version": "v1.0",
+      "golden_answer": "[demo golden answer]",
+      "expected_tools": [
+        "web_search"
+      ],
+      "labels": {
+        "optimal_tool_calls": 1
+      },
+      "eval_results": [
+        {
+          "eval_id": "857e029e",
+          "eval_layer": "pre_tool",
+          "eval_name": "intent_clarity",
+          "trace_id": "aa2c0925-61da-4991-bacc-472c960bfa47",
+          "span_id": null,
+          "passed": false,
+          "score": 0.75,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.717709",
+          "metadata": {}
+        },
+        {
+          "eval_id": "843440e6",
+          "eval_layer": "pre_tool",
+          "eval_name": "tool_selection",
+          "trace_id": "aa2c0925-61da-4991-bacc-472c960bfa47",
+          "span_id": null,
+          "passed": false,
+          "score": 0.618,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.717732",
+          "metadata": {}
+        },
+        {
+          "eval_id": "53e0340b",
+          "eval_layer": "pre_tool",
+          "eval_name": "pre_call_hallucination",
+          "trace_id": "aa2c0925-61da-4991-bacc-472c960bfa47",
+          "span_id": null,
+          "passed": false,
+          "score": 0.609,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.717756",
+          "metadata": {}
+        },
+        {
+          "eval_id": "b921cb42",
+          "eval_layer": "post_tool",
+          "eval_name": "param_schema_validation",
+          "trace_id": "aa2c0925-61da-4991-bacc-472c960bfa47",
+          "span_id": null,
+          "passed": true,
+          "score": 0.974,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "deterministic",
+          "timestamp": "2026-05-04T00:52:32.717767",
+          "metadata": {}
+        },
+        {
+          "eval_id": "75a8189d",
+          "eval_layer": "post_tool",
+          "eval_name": "param_value_quality",
+          "trace_id": "aa2c0925-61da-4991-bacc-472c960bfa47",
+          "span_id": null,
+          "passed": false,
+          "score": 0.596,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.717776",
+          "metadata": {}
+        },
+        {
+          "eval_id": "cbb12000",
+          "eval_layer": "post_tool",
+          "eval_name": "result_interpretation",
+          "trace_id": "aa2c0925-61da-4991-bacc-472c960bfa47",
+          "span_id": null,
+          "passed": false,
+          "score": 0.511,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.717785",
+          "metadata": {}
+        },
+        {
+          "eval_id": "a204433c",
+          "eval_layer": "post_tool",
+          "eval_name": "next_step_decision",
+          "trace_id": "aa2c0925-61da-4991-bacc-472c960bfa47",
+          "span_id": null,
+          "passed": true,
+          "score": 0.796,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.717795",
+          "metadata": {}
+        },
+        {
+          "eval_id": "c215ee99",
+          "eval_layer": "e2e",
+          "eval_name": "goal_completion",
+          "trace_id": "aa2c0925-61da-4991-bacc-472c960bfa47",
+          "span_id": null,
+          "passed": true,
+          "score": 0.706,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.717803",
+          "metadata": {}
+        },
+        {
+          "eval_id": "9541fe5f",
+          "eval_layer": "e2e",
+          "eval_name": "efficiency",
+          "trace_id": "aa2c0925-61da-4991-bacc-472c960bfa47",
+          "span_id": null,
+          "passed": false,
+          "score": 0.44,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "deterministic",
+          "timestamp": "2026-05-04T00:52:32.717812",
+          "metadata": {}
+        },
+        {
+          "eval_id": "40c5de51",
+          "eval_layer": "e2e",
+          "eval_name": "final_hallucination",
+          "trace_id": "aa2c0925-61da-4991-bacc-472c960bfa47",
+          "span_id": null,
+          "passed": false,
+          "score": 0.641,
+          "reason": "Synthetic evaluation result for demo purposes.",
+          "eval_type": "llm_judge",
+          "timestamp": "2026-05-04T00:52:32.717821",
+          "metadata": {}
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Eval Framework — Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0d14;
+    --surface: #111827;
+    --surface2: #1a2035;
+    --border: #1e2d45;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --accent: #6366f1;
+    --green: #22c55e;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --cyan: #0ea5e9;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    font-size: 14px;
+  }
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0f1729 0%, #1a0a2e 50%, #0a1a2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, #6366f133, transparent 70%);
+    pointer-events: none;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .header h1 {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+  .header h1 span { color: var(--accent); }
+  .header-sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 6px;
+    font-family: 'Space Mono', monospace;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.73rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+  }
+  .badge-versions {
+    background: var(--accent)22;
+    color: var(--accent);
+    border: 1px solid var(--accent)44;
+  }
+  .badge-evals {
+    background: #0ea5e922;
+    color: var(--cyan);
+    border: 1px solid #0ea5e944;
+  }
+  .badges { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+
+  /* Layout */
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 32px 60px; }
+  .section { margin-top: 40px; }
+  .section-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Gate cards */
+  .gate-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .gate-card {
+    background: var(--surface);
+    border: 1px solid;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+  .gate-version {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .gate-icon { font-size: 2.4rem; margin: 12px 0 8px; }
+  .gate-status {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .gate-meta { color: var(--muted); font-size: 0.78rem; margin-top: 8px; }
+  .fail-list {
+    text-align: left;
+    margin-top: 12px;
+    padding-left: 16px;
+    color: #ef4444;
+    font-size: 0.75rem;
+    list-style: disc;
+    line-height: 1.8;
+  }
+
+  /* Layer summary */
+  .layer-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .version-layer-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .vlb-version {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+  .layer-mini-card { margin-bottom: 14px; }
+  .lmc-label { font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
+  .lmc-score {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .lmc-bar-bg {
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .lmc-bar-fill { height: 100%; border-radius: 99px; transition: width 0.6s ease; }
+
+  /* Charts */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .chart-grid { grid-template-columns: 1fr; } }
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .chart-card h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+  }
+
+  /* Score table */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    background: var(--surface2);
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border)88;
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .eval-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+  .threshold-cell {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .score-cell { min-width: 100px; }
+  .score-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .score-bar {
+    height: 6px;
+    border-radius: 99px;
+    min-width: 4px;
+  }
+  .passrate-cell {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    white-space: nowrap;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 60px;
+    padding: 24px 48px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>Agent <span>Eval</span> Framework</h1>
+      <div class="header-sub">Multi-layer evaluation dashboard · NVIDIA NIM powered</div>
+      <div class="badges">
+        <span class="badge badge-versions">🔢 2 versions compared</span>
+        <span class="badge badge-evals">⚡ 10 evals · 3 layers</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Deployment Gate -->
+  <div class="section">
+    <div class="section-title">Deployment Gate Status</div>
+    <div class="gate-grid">
+      
+        <div class="gate-card" style="border-color:#ef444422;background:#ef444408">
+          <div class="gate-version">Agent v1.0</div>
+          <div class="gate-icon">❌</div>
+          <div class="gate-status" style="color:#ef4444">DEPLOYMENT BLOCKED</div>
+          <div class="gate-meta">5 traces evaluated</div>
+          <ul class='fail-list'><li>intent_clarity</li><li>tool_selection</li><li>pre_call_hallucination</li><li>param_schema_validation</li><li>param_value_quality</li><li>result_interpretation</li><li>next_step_decision</li><li>goal_completion</li><li>efficiency</li><li>final_hallucination</li></ul>
+        </div>
+        <div class="gate-card" style="border-color:#22c55e22;background:#22c55e08">
+          <div class="gate-version">Agent v2.0</div>
+          <div class="gate-icon">✅</div>
+          <div class="gate-status" style="color:#22c55e">DEPLOYMENT READY</div>
+          <div class="gate-meta">5 traces evaluated</div>
+          
+        </div>
+    </div>
+  </div>
+
+  <!-- Layer Averages -->
+  <div class="section">
+    <div class="section-title">Layer Score Averages by Version</div>
+    <div class="layer-summary-grid">
+      
+        <div class="version-layer-block">
+          <div class="vlb-version">Agent v1.0</div>
+          
+            <div class="layer-mini-card">
+              <div class="lmc-label" style="color:#6366f1">Layer 1 · Pre-Tool</div>
+              <div class="lmc-score" style="color:#6366f1">0.66</div>
+              <div class="lmc-bar-bg"><div class="lmc-bar-fill" style="width:65%;background:#6366f1"></div></div>
+            </div>
+            <div class="layer-mini-card">
+              <div class="lmc-label" style="color:#0ea5e9">Layer 2 · Post-Tool</div>
+              <div class="lmc-score" style="color:#0ea5e9">0.70</div>
+              <div class="lmc-bar-bg"><div class="lmc-bar-fill" style="width:70%;background:#0ea5e9"></div></div>
+            </div>
+            <div class="layer-mini-card">
+              <div class="lmc-label" style="color:#f59e0b">Layer 3 · End-to-End</div>
+              <div class="lmc-score" style="color:#f59e0b">0.61</div>
+              <div class="lmc-bar-bg"><div class="lmc-bar-fill" style="width:61%;background:#f59e0b"></div></div>
+            </div>
+        </div>
+        <div class="version-layer-block">
+          <div class="vlb-version">Agent v2.0</div>
+          
+            <div class="layer-mini-card">
+              <div class="lmc-label" style="color:#6366f1">Layer 1 · Pre-Tool</div>
+              <div class="lmc-score" style="color:#6366f1">0.87</div>
+              <div class="lmc-bar-bg"><div class="lmc-bar-fill" style="width:86%;background:#6366f1"></div></div>
+            </div>
+            <div class="layer-mini-card">
+              <div class="lmc-label" style="color:#0ea5e9">Layer 2 · Post-Tool</div>
+              <div class="lmc-score" style="color:#0ea5e9">0.89</div>
+              <div class="lmc-bar-bg"><div class="lmc-bar-fill" style="width:89%;background:#0ea5e9"></div></div>
+            </div>
+            <div class="layer-mini-card">
+              <div class="lmc-label" style="color:#f59e0b">Layer 3 · End-to-End</div>
+              <div class="lmc-score" style="color:#f59e0b">0.81</div>
+              <div class="lmc-bar-bg"><div class="lmc-bar-fill" style="width:80%;background:#f59e0b"></div></div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="section">
+    <div class="section-title">Score History &amp; Layer Radar</div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Eval Score History Across Versions</h3>
+        <canvas id="lineChart" height="280"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Layer Radar</h3>
+        <canvas id="radarChart" height="280"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Score Table -->
+  <div class="section">
+    <div class="section-title">Full Eval Score Table</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Eval Name</th>
+            <th>Gate Threshold</th>
+            <th>Agent v1.0 Score</th><th>Agent v1.0 Pass%</th><th>Agent v2.0 Score</th><th>Agent v2.0 Pass%</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr class="layer-header">
+              <td colspan="6" style="background:#6366f122; color:#6366f1; font-weight:700; padding:8px 16px; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;">
+                Layer 1 · Pre-Tool
+              </td>
+            </tr>
+        <tr>
+          <td class="eval-name">intent_clarity</td>
+          <td class="threshold-cell">0.80</td>
+          
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:40px;background:#ef4444"></div>
+                    <span style="color:#ef4444;font-weight:700">0.68</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">0% (5)</td>
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:51px;background:#22c55e"></div>
+                    <span style="color:#22c55e;font-weight:700">0.86</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">100% (5)</td>
+        </tr>
+        <tr>
+          <td class="eval-name">pre_call_hallucination</td>
+          <td class="threshold-cell">0.80</td>
+          
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:39px;background:#ef4444"></div>
+                    <span style="color:#ef4444;font-weight:700">0.66</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">20% (5)</td>
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:52px;background:#22c55e"></div>
+                    <span style="color:#22c55e;font-weight:700">0.88</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">80% (5)</td>
+        </tr>
+        <tr>
+          <td class="eval-name">tool_selection</td>
+          <td class="threshold-cell">0.80</td>
+          
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:37px;background:#ef4444"></div>
+                    <span style="color:#ef4444;font-weight:700">0.62</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">0% (5)</td>
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:51px;background:#22c55e"></div>
+                    <span style="color:#22c55e;font-weight:700">0.86</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">100% (5)</td>
+        </tr>
+            <tr class="layer-header">
+              <td colspan="6" style="background:#0ea5e922; color:#0ea5e9; font-weight:700; padding:8px 16px; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;">
+                Layer 2 · Post-Tool
+              </td>
+            </tr>
+        <tr>
+          <td class="eval-name">next_step_decision</td>
+          <td class="threshold-cell">0.75</td>
+          
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:39px;background:#f97316"></div>
+                    <span style="color:#f97316;font-weight:700">0.65</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">20% (5)</td>
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:52px;background:#22c55e"></div>
+                    <span style="color:#22c55e;font-weight:700">0.88</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">100% (5)</td>
+        </tr>
+        <tr>
+          <td class="eval-name">param_schema_validation</td>
+          <td class="threshold-cell">0.95</td>
+          
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:53px;background:#f97316"></div>
+                    <span style="color:#f97316;font-weight:700">0.89</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">40% (5)</td>
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:58px;background:#22c55e"></div>
+                    <span style="color:#22c55e;font-weight:700">0.97</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">100% (5)</td>
+        </tr>
+        <tr>
+          <td class="eval-name">param_value_quality</td>
+          <td class="threshold-cell">0.75</td>
+          
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:37px;background:#ef4444"></div>
+                    <span style="color:#ef4444;font-weight:700">0.62</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">0% (5)</td>
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:53px;background:#22c55e"></div>
+                    <span style="color:#22c55e;font-weight:700">0.89</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">100% (5)</td>
+        </tr>
+        <tr>
+          <td class="eval-name">result_interpretation</td>
+          <td class="threshold-cell">0.75</td>
+          
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:39px;background:#f97316"></div>
+                    <span style="color:#f97316;font-weight:700">0.66</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">20% (5)</td>
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:49px;background:#84cc16"></div>
+                    <span style="color:#84cc16;font-weight:700">0.82</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">80% (5)</td>
+        </tr>
+            <tr class="layer-header">
+              <td colspan="6" style="background:#f59e0b22; color:#f59e0b; font-weight:700; padding:8px 16px; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;">
+                Layer 3 · End-to-End
+              </td>
+            </tr>
+        <tr>
+          <td class="eval-name">efficiency</td>
+          <td class="threshold-cell">0.65</td>
+          
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:32px;background:#ef4444"></div>
+                    <span style="color:#ef4444;font-weight:700">0.54</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">20% (5)</td>
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:46px;background:#84cc16"></div>
+                    <span style="color:#84cc16;font-weight:700">0.77</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">100% (5)</td>
+        </tr>
+        <tr>
+          <td class="eval-name">final_hallucination</td>
+          <td class="threshold-cell">0.75</td>
+          
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:42px;background:#f97316"></div>
+                    <span style="color:#f97316;font-weight:700">0.70</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">20% (5)</td>
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:45px;background:#84cc16"></div>
+                    <span style="color:#84cc16;font-weight:700">0.76</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">40% (5)</td>
+        </tr>
+        <tr>
+          <td class="eval-name">goal_completion</td>
+          <td class="threshold-cell">0.70</td>
+          
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:36px;background:#f97316"></div>
+                    <span style="color:#f97316;font-weight:700">0.60</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">20% (5)</td>
+                <td class="score-cell">
+                  <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:53px;background:#22c55e"></div>
+                    <span style="color:#22c55e;font-weight:700">0.89</span>
+                  </div>
+                </td>
+                <td class="passrate-cell">100% (5)</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <span>Agent Eval Framework · JSON-backed · NVIDIA NIM judge</span>
+  <span>Generated automatically · 2 versions · 10 evals</span>
+</div>
+
+<script>
+const chartData = {"labels": ["v1.0", "v2.0"], "datasets": [{"label": "intent_clarity", "data": [0.683, 0.86], "borderColor": "#6366f1", "backgroundColor": "#6366f122", "tension": 0.3, "pointRadius": 5}, {"label": "pre_call_hallucination", "data": [0.664, 0.878], "borderColor": "#0ea5e9", "backgroundColor": "#0ea5e922", "tension": 0.3, "pointRadius": 5}, {"label": "tool_selection", "data": [0.625, 0.862], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b22", "tension": 0.3, "pointRadius": 5}, {"label": "next_step_decision", "data": [0.652, 0.882], "borderColor": "#22c55e", "backgroundColor": "#22c55e22", "tension": 0.3, "pointRadius": 5}, {"label": "param_schema_validation", "data": [0.889, 0.975], "borderColor": "#ef4444", "backgroundColor": "#ef444422", "tension": 0.3, "pointRadius": 5}, {"label": "param_value_quality", "data": [0.621, 0.888], "borderColor": "#ec4899", "backgroundColor": "#ec489922", "tension": 0.3, "pointRadius": 5}, {"label": "result_interpretation", "data": [0.656, 0.818], "borderColor": "#14b8a6", "backgroundColor": "#14b8a622", "tension": 0.3, "pointRadius": 5}, {"label": "efficiency", "data": [0.544, 0.77], "borderColor": "#a855f7", "backgroundColor": "#a855f722", "tension": 0.3, "pointRadius": 5}, {"label": "final_hallucination", "data": [0.7, 0.758], "borderColor": "#f97316", "backgroundColor": "#f9731622", "tension": 0.3, "pointRadius": 5}, {"label": "goal_completion", "data": [0.601, 0.889], "borderColor": "#84cc16", "backgroundColor": "#84cc1622", "tension": 0.3, "pointRadius": 5}]};
+const radarData = {"labels": ["Pre-Tool", "Post-Tool", "E2E"], "datasets": [{"label": "Agent v1.0", "data": [0.657, 0.705, 0.615], "borderColor": "#6366f1", "backgroundColor": "#6366f133"}, {"label": "Agent v2.0", "data": [0.867, 0.891, 0.806], "borderColor": "#0ea5e9", "backgroundColor": "#0ea5e933"}]};
+
+// Line chart
+new Chart(document.getElementById('lineChart'), {
+  type: 'line',
+  data: chartData,
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { color: '#94a3b8', font: { size: 10, family: 'Space Mono' }, boxWidth: 12 }
+      },
+      tooltip: { mode: 'index', intersect: false }
+    },
+    scales: {
+      y: {
+        min: 0, max: 1,
+        ticks: { color: '#64748b', font: { size: 10, family: 'Space Mono' }, stepSize: 0.2 },
+        grid: { color: '#1e2d4588' }
+      },
+      x: {
+        ticks: { color: '#64748b', font: { size: 10, family: 'Space Mono' } },
+        grid: { color: '#1e2d4544' }
+      }
+    }
+  }
+});
+
+// Radar chart
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: radarData,
+  options: {
+    responsive: true,
+    scales: {
+      r: {
+        min: 0, max: 1,
+        ticks: { color: '#64748b', font: { size: 9 }, stepSize: 0.25, backdropColor: 'transparent' },
+        grid: { color: '#1e2d4588' },
+        pointLabels: { color: '#94a3b8', font: { size: 11, family: 'DM Sans' } }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: { color: '#94a3b8', font: { size: 11, family: 'DM Sans' }, boxWidth: 14 }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>

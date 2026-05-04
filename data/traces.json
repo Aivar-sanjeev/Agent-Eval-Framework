@@ -1,0 +1,582 @@
+[
+  {
+    "trace_id": "3be0623c-69e0-46eb-8180-b518a8e98b54",
+    "agent_version": "v1.0",
+    "query": "What is the current CO2 level in the atmosphere and how has it changed?",
+    "spans": [
+      {
+        "span_type": "reasoning",
+        "span_id": "4d04576b",
+        "timestamp": "2026-05-04T00:52:32.712116",
+        "step_index": 1,
+        "reasoning_text": "The user is asking about: What is the current CO2 level in the atmosphere and how has . I should use web_search.",
+        "identified_intent": "What is the current CO2 level in the atmosphere and how has it changed?",
+        "selected_tool": "web_search",
+        "available_tools": [
+          "web_search",
+          "calculator",
+          "weather_lookup",
+          "unit_converter"
+        ],
+        "raw_llm_output": "I need to call web_search."
+      },
+      {
+        "span_type": "tool_call",
+        "span_id": "f5f162f2",
+        "timestamp": "2026-05-04T00:52:32.712165",
+        "step_index": 1,
+        "tool_name": "web_search",
+        "tool_parameters": {
+          "query": "What is the current CO2 level in the atm"
+        },
+        "tool_result": "Found relevant information.",
+        "tool_error": null,
+        "latency_ms": 86.8
+      },
+      {
+        "span_type": "interpretation",
+        "span_id": "3282fc1e",
+        "timestamp": "2026-05-04T00:52:32.712185",
+        "step_index": 1,
+        "tool_result_summary": "Extracted the key data from the tool result.",
+        "next_action": "final_answer",
+        "reasoning_for_next": "I have enough information to answer.",
+        "raw_llm_output": "I have the answer."
+      },
+      {
+        "span_type": "final_answer",
+        "span_id": "eac0a7e3",
+        "timestamp": "2026-05-04T00:52:32.712200",
+        "answer_text": "Based on the information retrieved: What is the current CO2 level in the atm... [answer]",
+        "total_steps": 1,
+        "total_tool_calls": 1
+      }
+    ],
+    "final_answer": "Based on the information retrieved: What is the current CO2 level in the atm... [answer]",
+    "started_at": "2026-05-04T00:52:32.712078",
+    "finished_at": "2026-05-04T00:52:32.712222",
+    "metadata": {}
+  },
+  {
+    "trace_id": "fb70bd6c-4730-4f62-a4d1-f80fcc1892a8",
+    "agent_version": "v1.0",
+    "query": "If I invest $5000 at 7% annual compound interest for 10 years, how much will I have?",
+    "spans": [
+      {
+        "span_type": "reasoning",
+        "span_id": "59c81fd2",
+        "timestamp": "2026-05-04T00:52:32.713056",
+        "step_index": 1,
+        "reasoning_text": "The user is asking about: If I invest $5000 at 7% annual compound interest for 10 year. I should use web_search.",
+        "identified_intent": "If I invest $5000 at 7% annual compound interest for 10 years, how much will I h",
+        "selected_tool": "web_search",
+        "available_tools": [
+          "web_search",
+          "calculator",
+          "weather_lookup",
+          "unit_converter"
+        ],
+        "raw_llm_output": "I need to call web_search."
+      },
+      {
+        "span_type": "tool_call",
+        "span_id": "53574be7",
+        "timestamp": "2026-05-04T00:52:32.713073",
+        "step_index": 1,
+        "tool_name": "web_search",
+        "tool_parameters": {
+          "query": "If I invest $5000 at 7% annual compound "
+        },
+        "tool_result": "Found relevant information.",
+        "tool_error": null,
+        "latency_ms": 231.5
+      },
+      {
+        "span_type": "interpretation",
+        "span_id": "e7ed3bb5",
+        "timestamp": "2026-05-04T00:52:32.713085",
+        "step_index": 1,
+        "tool_result_summary": "Extracted the key data from the tool result.",
+        "next_action": "final_answer",
+        "reasoning_for_next": "I have enough information to answer.",
+        "raw_llm_output": "I have the answer."
+      },
+      {
+        "span_type": "final_answer",
+        "span_id": "1db90382",
+        "timestamp": "2026-05-04T00:52:32.713097",
+        "answer_text": "Based on the information retrieved: If I invest $5000 at 7% annual compound ... [answer]",
+        "total_steps": 1,
+        "total_tool_calls": 1
+      }
+    ],
+    "final_answer": "Based on the information retrieved: If I invest $5000 at 7% annual compound ... [answer]",
+    "started_at": "2026-05-04T00:52:32.713043",
+    "finished_at": "2026-05-04T00:52:32.713104",
+    "metadata": {}
+  },
+  {
+    "trace_id": "f6a5e472-2e6d-4a78-9c67-1eeb7a571003",
+    "agent_version": "v1.0",
+    "query": "What's the weather in Tokyo and what is 25\u00b0C in Fahrenheit?",
+    "spans": [
+      {
+        "span_type": "reasoning",
+        "span_id": "bd0c2662",
+        "timestamp": "2026-05-04T00:52:32.713949",
+        "step_index": 1,
+        "reasoning_text": "The user is asking about: What's the weather in Tokyo and what is 25\u00b0C in Fahrenheit?. I should use calculator.",
+        "identified_intent": "What's the weather in Tokyo and what is 25\u00b0C in Fahrenheit?",
+        "selected_tool": "calculator",
+        "available_tools": [
+          "web_search",
+          "calculator",
+          "weather_lookup",
+          "unit_converter"
+        ],
+        "raw_llm_output": "I need to call calculator."
+      },
+      {
+        "span_type": "tool_call",
+        "span_id": "0146feb7",
+        "timestamp": "2026-05-04T00:52:32.713968",
+        "step_index": 1,
+        "tool_name": "calculator",
+        "tool_parameters": {
+          "expression": "5000 * 1.07**10"
+        },
+        "tool_result": "Result: 9835.76",
+        "tool_error": null,
+        "latency_ms": 338.4
+      },
+      {
+        "span_type": "interpretation",
+        "span_id": "fb97e033",
+        "timestamp": "2026-05-04T00:52:32.713982",
+        "step_index": 1,
+        "tool_result_summary": "Extracted the key data from the tool result.",
+        "next_action": "final_answer",
+        "reasoning_for_next": "I have enough information to answer.",
+        "raw_llm_output": "I have the answer."
+      },
+      {
+        "span_type": "final_answer",
+        "span_id": "841527d9",
+        "timestamp": "2026-05-04T00:52:32.713993",
+        "answer_text": "Based on the information retrieved: What's the weather in Tokyo and what is ... [answer]",
+        "total_steps": 1,
+        "total_tool_calls": 1
+      }
+    ],
+    "final_answer": "Based on the information retrieved: What's the weather in Tokyo and what is ... [answer]",
+    "started_at": "2026-05-04T00:52:32.713933",
+    "finished_at": "2026-05-04T00:52:32.714002",
+    "metadata": {}
+  },
+  {
+    "trace_id": "a14f2ef2-4d76-437e-9e2d-5ea6f3b5eee3",
+    "agent_version": "v1.0",
+    "query": "How far is a marathon in miles, and how long to run at 6 min/km?",
+    "spans": [
+      {
+        "span_type": "reasoning",
+        "span_id": "8121bf79",
+        "timestamp": "2026-05-04T00:52:32.715061",
+        "step_index": 1,
+        "reasoning_text": "The user is asking about: How far is a marathon in miles, and how long to run at 6 min. I should use weather_lookup.",
+        "identified_intent": "How far is a marathon in miles, and how long to run at 6 min/km?",
+        "selected_tool": "weather_lookup",
+        "available_tools": [
+          "web_search",
+          "calculator",
+          "weather_lookup",
+          "unit_converter"
+        ],
+        "raw_llm_output": "I need to call weather_lookup."
+      },
+      {
+        "span_type": "tool_call",
+        "span_id": "d106f355",
+        "timestamp": "2026-05-04T00:52:32.715080",
+        "step_index": 1,
+        "tool_name": "weather_lookup",
+        "tool_parameters": {
+          "expression": "5000 * 1.07**10"
+        },
+        "tool_result": "Found relevant information.",
+        "tool_error": null,
+        "latency_ms": 303.9
+      },
+      {
+        "span_type": "interpretation",
+        "span_id": "59cb6a45",
+        "timestamp": "2026-05-04T00:52:32.715092",
+        "step_index": 1,
+        "tool_result_summary": "Extracted the key data from the tool result.",
+        "next_action": "final_answer",
+        "reasoning_for_next": "I have enough information to answer.",
+        "raw_llm_output": "I have the answer."
+      },
+      {
+        "span_type": "final_answer",
+        "span_id": "ccb41f3e",
+        "timestamp": "2026-05-04T00:52:32.715103",
+        "answer_text": "Based on the information retrieved: How far is a marathon in miles, and how ... [answer]",
+        "total_steps": 1,
+        "total_tool_calls": 1
+      }
+    ],
+    "final_answer": "Based on the information retrieved: How far is a marathon in miles, and how ... [answer]",
+    "started_at": "2026-05-04T00:52:32.715046",
+    "finished_at": "2026-05-04T00:52:32.715111",
+    "metadata": {}
+  },
+  {
+    "trace_id": "aa2c0925-61da-4991-bacc-472c960bfa47",
+    "agent_version": "v1.0",
+    "query": "What is NVIDIA's current revenue trend and AI demand outlook?",
+    "spans": [
+      {
+        "span_type": "reasoning",
+        "span_id": "439ddf90",
+        "timestamp": "2026-05-04T00:52:32.717131",
+        "step_index": 1,
+        "reasoning_text": "The user is asking about: What is NVIDIA's current revenue trend and AI demand outlook. I should use weather_lookup.",
+        "identified_intent": "What is NVIDIA's current revenue trend and AI demand outlook?",
+        "selected_tool": "weather_lookup",
+        "available_tools": [
+          "web_search",
+          "calculator",
+          "weather_lookup",
+          "unit_converter"
+        ],
+        "raw_llm_output": "I need to call weather_lookup."
+      },
+      {
+        "span_type": "tool_call",
+        "span_id": "16346691",
+        "timestamp": "2026-05-04T00:52:32.717154",
+        "step_index": 1,
+        "tool_name": "weather_lookup",
+        "tool_parameters": {
+          "expression": "5000 * 1.07**10"
+        },
+        "tool_result": "Found relevant information.",
+        "tool_error": null,
+        "latency_ms": 202.4
+      },
+      {
+        "span_type": "interpretation",
+        "span_id": "0a4586d3",
+        "timestamp": "2026-05-04T00:52:32.717168",
+        "step_index": 1,
+        "tool_result_summary": "Extracted the key data from the tool result.",
+        "next_action": "final_answer",
+        "reasoning_for_next": "I have enough information to answer.",
+        "raw_llm_output": "I have the answer."
+      },
+      {
+        "span_type": "final_answer",
+        "span_id": "36e27a0f",
+        "timestamp": "2026-05-04T00:52:32.717181",
+        "answer_text": "Based on the information retrieved: What is NVIDIA's current revenue trend a... [answer]",
+        "total_steps": 1,
+        "total_tool_calls": 1
+      }
+    ],
+    "final_answer": "Based on the information retrieved: What is NVIDIA's current revenue trend a... [answer]",
+    "started_at": "2026-05-04T00:52:32.717109",
+    "finished_at": "2026-05-04T00:52:32.717189",
+    "metadata": {}
+  },
+  {
+    "trace_id": "ab7a7f76-b000-48ca-a9b7-bd57c7dfa838",
+    "agent_version": "v2.0",
+    "query": "What is the current CO2 level in the atmosphere and how has it changed?",
+    "spans": [
+      {
+        "span_type": "reasoning",
+        "span_id": "d25fa0fb",
+        "timestamp": "2026-05-04T00:52:32.719550",
+        "step_index": 1,
+        "reasoning_text": "The user is asking about: What is the current CO2 level in the atmosphere and how has . I should use unit_converter.",
+        "identified_intent": "What is the current CO2 level in the atmosphere and how has it changed?",
+        "selected_tool": "unit_converter",
+        "available_tools": [
+          "web_search",
+          "calculator",
+          "weather_lookup",
+          "unit_converter"
+        ],
+        "raw_llm_output": "I need to call unit_converter."
+      },
+      {
+        "span_type": "tool_call",
+        "span_id": "efc3c571",
+        "timestamp": "2026-05-04T00:52:32.719585",
+        "step_index": 1,
+        "tool_name": "unit_converter",
+        "tool_parameters": {
+          "expression": "5000 * 1.07**10"
+        },
+        "tool_result": "Found relevant information.",
+        "tool_error": null,
+        "latency_ms": 182.5
+      },
+      {
+        "span_type": "interpretation",
+        "span_id": "0df7ca93",
+        "timestamp": "2026-05-04T00:52:32.719600",
+        "step_index": 1,
+        "tool_result_summary": "Extracted the key data from the tool result.",
+        "next_action": "final_answer",
+        "reasoning_for_next": "I have enough information to answer.",
+        "raw_llm_output": "I have the answer."
+      },
+      {
+        "span_type": "final_answer",
+        "span_id": "4a6cdef2",
+        "timestamp": "2026-05-04T00:52:32.719612",
+        "answer_text": "Based on the information retrieved: What is the current CO2 level in the atm... [answer]",
+        "total_steps": 1,
+        "total_tool_calls": 1
+      }
+    ],
+    "final_answer": "Based on the information retrieved: What is the current CO2 level in the atm... [answer]",
+    "started_at": "2026-05-04T00:52:32.719529",
+    "finished_at": "2026-05-04T00:52:32.719620",
+    "metadata": {}
+  },
+  {
+    "trace_id": "b8c92218-b254-44b8-be21-1df5f9dccabf",
+    "agent_version": "v2.0",
+    "query": "If I invest $5000 at 7% annual compound interest for 10 years, how much will I have?",
+    "spans": [
+      {
+        "span_type": "reasoning",
+        "span_id": "823471a4",
+        "timestamp": "2026-05-04T00:52:32.721185",
+        "step_index": 1,
+        "reasoning_text": "The user is asking about: If I invest $5000 at 7% annual compound interest for 10 year. I should use calculator.",
+        "identified_intent": "If I invest $5000 at 7% annual compound interest for 10 years, how much will I h",
+        "selected_tool": "calculator",
+        "available_tools": [
+          "web_search",
+          "calculator",
+          "weather_lookup",
+          "unit_converter"
+        ],
+        "raw_llm_output": "I need to call calculator."
+      },
+      {
+        "span_type": "tool_call",
+        "span_id": "b08e8007",
+        "timestamp": "2026-05-04T00:52:32.721205",
+        "step_index": 1,
+        "tool_name": "calculator",
+        "tool_parameters": {
+          "expression": "5000 * 1.07**10"
+        },
+        "tool_result": "Result: 9835.76",
+        "tool_error": null,
+        "latency_ms": 326.5
+      },
+      {
+        "span_type": "interpretation",
+        "span_id": "1abebcf6",
+        "timestamp": "2026-05-04T00:52:32.721221",
+        "step_index": 1,
+        "tool_result_summary": "Extracted the key data from the tool result.",
+        "next_action": "final_answer",
+        "reasoning_for_next": "I have enough information to answer.",
+        "raw_llm_output": "I have the answer."
+      },
+      {
+        "span_type": "final_answer",
+        "span_id": "45b84020",
+        "timestamp": "2026-05-04T00:52:32.721235",
+        "answer_text": "Based on the information retrieved: If I invest $5000 at 7% annual compound ... [answer]",
+        "total_steps": 1,
+        "total_tool_calls": 1
+      }
+    ],
+    "final_answer": "Based on the information retrieved: If I invest $5000 at 7% annual compound ... [answer]",
+    "started_at": "2026-05-04T00:52:32.721169",
+    "finished_at": "2026-05-04T00:52:32.721245",
+    "metadata": {}
+  },
+  {
+    "trace_id": "9b9a46c3-405c-42d8-b7d7-f77262c500f4",
+    "agent_version": "v2.0",
+    "query": "What's the weather in Tokyo and what is 25\u00b0C in Fahrenheit?",
+    "spans": [
+      {
+        "span_type": "reasoning",
+        "span_id": "73b31609",
+        "timestamp": "2026-05-04T00:52:32.722828",
+        "step_index": 1,
+        "reasoning_text": "The user is asking about: What's the weather in Tokyo and what is 25\u00b0C in Fahrenheit?. I should use unit_converter.",
+        "identified_intent": "What's the weather in Tokyo and what is 25\u00b0C in Fahrenheit?",
+        "selected_tool": "unit_converter",
+        "available_tools": [
+          "web_search",
+          "calculator",
+          "weather_lookup",
+          "unit_converter"
+        ],
+        "raw_llm_output": "I need to call unit_converter."
+      },
+      {
+        "span_type": "tool_call",
+        "span_id": "c62c0078",
+        "timestamp": "2026-05-04T00:52:32.722845",
+        "step_index": 1,
+        "tool_name": "unit_converter",
+        "tool_parameters": {
+          "expression": "5000 * 1.07**10"
+        },
+        "tool_result": "Found relevant information.",
+        "tool_error": null,
+        "latency_ms": 322.4
+      },
+      {
+        "span_type": "interpretation",
+        "span_id": "6a79706d",
+        "timestamp": "2026-05-04T00:52:32.722857",
+        "step_index": 1,
+        "tool_result_summary": "Extracted the key data from the tool result.",
+        "next_action": "final_answer",
+        "reasoning_for_next": "I have enough information to answer.",
+        "raw_llm_output": "I have the answer."
+      },
+      {
+        "span_type": "final_answer",
+        "span_id": "28d2a494",
+        "timestamp": "2026-05-04T00:52:32.722867",
+        "answer_text": "Based on the information retrieved: What's the weather in Tokyo and what is ... [answer]",
+        "total_steps": 1,
+        "total_tool_calls": 1
+      }
+    ],
+    "final_answer": "Based on the information retrieved: What's the weather in Tokyo and what is ... [answer]",
+    "started_at": "2026-05-04T00:52:32.722813",
+    "finished_at": "2026-05-04T00:52:32.722874",
+    "metadata": {}
+  },
+  {
+    "trace_id": "2fa3987a-ebb0-4e89-adc6-6ceac633ef15",
+    "agent_version": "v2.0",
+    "query": "How far is a marathon in miles, and how long to run at 6 min/km?",
+    "spans": [
+      {
+        "span_type": "reasoning",
+        "span_id": "cea7b84d",
+        "timestamp": "2026-05-04T00:52:32.724846",
+        "step_index": 1,
+        "reasoning_text": "The user is asking about: How far is a marathon in miles, and how long to run at 6 min. I should use web_search.",
+        "identified_intent": "How far is a marathon in miles, and how long to run at 6 min/km?",
+        "selected_tool": "web_search",
+        "available_tools": [
+          "web_search",
+          "calculator",
+          "weather_lookup",
+          "unit_converter"
+        ],
+        "raw_llm_output": "I need to call web_search."
+      },
+      {
+        "span_type": "tool_call",
+        "span_id": "89171dbe",
+        "timestamp": "2026-05-04T00:52:32.724870",
+        "step_index": 1,
+        "tool_name": "web_search",
+        "tool_parameters": {
+          "query": "How far is a marathon in miles, and how "
+        },
+        "tool_result": "Found relevant information.",
+        "tool_error": null,
+        "latency_ms": 183.9
+      },
+      {
+        "span_type": "interpretation",
+        "span_id": "0b522afc",
+        "timestamp": "2026-05-04T00:52:32.724887",
+        "step_index": 1,
+        "tool_result_summary": "Extracted the key data from the tool result.",
+        "next_action": "final_answer",
+        "reasoning_for_next": "I have enough information to answer.",
+        "raw_llm_output": "I have the answer."
+      },
+      {
+        "span_type": "final_answer",
+        "span_id": "a12c85de",
+        "timestamp": "2026-05-04T00:52:32.724902",
+        "answer_text": "Based on the information retrieved: How far is a marathon in miles, and how ... [answer]",
+        "total_steps": 1,
+        "total_tool_calls": 1
+      }
+    ],
+    "final_answer": "Based on the information retrieved: How far is a marathon in miles, and how ... [answer]",
+    "started_at": "2026-05-04T00:52:32.724825",
+    "finished_at": "2026-05-04T00:52:32.724912",
+    "metadata": {}
+  },
+  {
+    "trace_id": "80fecbb3-8748-4856-b7b2-a3871888163c",
+    "agent_version": "v2.0",
+    "query": "What is NVIDIA's current revenue trend and AI demand outlook?",
+    "spans": [
+      {
+        "span_type": "reasoning",
+        "span_id": "1f8a4339",
+        "timestamp": "2026-05-04T00:52:32.726914",
+        "step_index": 1,
+        "reasoning_text": "The user is asking about: What is NVIDIA's current revenue trend and AI demand outlook. I should use weather_lookup.",
+        "identified_intent": "What is NVIDIA's current revenue trend and AI demand outlook?",
+        "selected_tool": "weather_lookup",
+        "available_tools": [
+          "web_search",
+          "calculator",
+          "weather_lookup",
+          "unit_converter"
+        ],
+        "raw_llm_output": "I need to call weather_lookup."
+      },
+      {
+        "span_type": "tool_call",
+        "span_id": "16bb008e",
+        "timestamp": "2026-05-04T00:52:32.726934",
+        "step_index": 1,
+        "tool_name": "weather_lookup",
+        "tool_parameters": {
+          "expression": "5000 * 1.07**10"
+        },
+        "tool_result": "Found relevant information.",
+        "tool_error": null,
+        "latency_ms": 110.1
+      },
+      {
+        "span_type": "interpretation",
+        "span_id": "6db0b75a",
+        "timestamp": "2026-05-04T00:52:32.726947",
+        "step_index": 1,
+        "tool_result_summary": "Extracted the key data from the tool result.",
+        "next_action": "final_answer",
+        "reasoning_for_next": "I have enough information to answer.",
+        "raw_llm_output": "I have the answer."
+      },
+      {
+        "span_type": "final_answer",
+        "span_id": "12a53296",
+        "timestamp": "2026-05-04T00:52:32.726958",
+        "answer_text": "Based on the information retrieved: What is NVIDIA's current revenue trend a... [answer]",
+        "total_steps": 1,
+        "total_tool_calls": 1
+      }
+    ],
+    "final_answer": "Based on the information retrieved: What is NVIDIA's current revenue trend a... [answer]",
+    "started_at": "2026-05-04T00:52:32.726896",
+    "finished_at": "2026-05-04T00:52:32.726966",
+    "metadata": {}
+  }
+]
