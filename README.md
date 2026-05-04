@@ -67,6 +67,14 @@ After a run you get a **trace summary** (spans, tool calls, trace id), the **fin
 
 ![Streamlit interactive run: agent version, query, trace summary, and evaluation details with judge reasons](Screenshot/image.png)
 
+### Demo video
+
+Screen recording of the Streamlit **interactive run** (agent + full eval suite) and the resulting trace / evaluation UI:
+
+- **[`Agent_Eval.mp4`](Demo%20VIdeo/Agent_Eval.mp4)** — open or download from the repo file tree, or play locally after clone:  
+  `Demo VIdeo/Agent_Eval.mp4`  
+  On GitHub’s README, the link opens the file page; use **Download** or your media player for playback (in-browser preview depends on the browser).
+
 **Without API** — synthetic dashboard only:
 
 ```bash
@@ -114,6 +122,7 @@ Production sampling workflow (conceptual): export traces → label in UI or spre
 
 ```
 agent_eval_framework/
+  Demo VIdeo/Agent_Eval.mp4  # Screen recording (linked from README)
   Screenshot/image.png        # Sample UI (referenced from README)
   streamlit_app.py           # Browser UI for single-query runs + eval table
   agent/research_agent.py    # Groq demo agent + tool traces
