@@ -1,5 +1,5 @@
 """
-research_agent.py — A multi-tool research agent powered by NVIDIA NIM.
+research_agent.py — A multi-tool research agent powered by Groq (OpenAI-compatible API).
 Instruments every step with the framework tracer for full observability.
 
 Tools available:
@@ -9,20 +9,22 @@ Tools available:
   • unit_converter — real conversion
 """
 from __future__ import annotations
+import copy
 import json
 import math
-import os
 import re
 import time
 import uuid
 from typing import Any, Dict, List, Optional, Tuple
-from openai import OpenAI
+
+from openai import BadRequestError, OpenAI
 
 from framework.schema import (
     FinalAnswerSpan, InterpretationSpan, ReasoningSpan, ToolCallSpan, Trace,
 )
 from framework.tracer import Tracer
-from framework.settings import nvidia_agent_model, nvidia_base_url
+from framework.openai_retry import chat_completions_create
+from framework.settings import groq_agent_model, groq_api_key, groq_base_url
 
 
 
@@ -96,6 +98,13 @@ def tool_unit_converter(value: float, from_unit: str, to_unit: str) -> str:
     return f"Conversion from {from_unit} to {to_unit} not supported."
 
 
+# Appended to system prompt when sending a flattened, tool-free transcript (Groq compatibility).
+TEXT_ONLY_SYSTEM_SUFFIX = (
+    "\n\nFor this turn only: do not call tools or functions. "
+    "Reply with plain text or JSON exactly as instructed by the latest user message."
+)
+
+
 TOOLS_REGISTRY = {
     "web_search": tool_web_search,
     "calculator": tool_calculator,
@@ -103,6 +112,7 @@ TOOLS_REGISTRY = {
     "unit_converter": tool_unit_converter,
 }
 
+# JSON schemas use additionalProperties: false — Groq validates tool calls strictly.
 TOOL_SPECS = [
     {
         "type": "function",
@@ -111,8 +121,11 @@ TOOL_SPECS = [
             "description": "Search the web for current information on a topic.",
             "parameters": {
                 "type": "object",
-                "properties": {"query": {"type": "string", "description": "The search query"}},
+                "properties": {
+                    "query": {"type": "string", "description": "The search query"},
+                },
                 "required": ["query"],
+                "additionalProperties": False,
             },
         },
     },
@@ -123,8 +136,14 @@ TOOL_SPECS = [
             "description": "Evaluate a mathematical expression.",
             "parameters": {
                 "type": "object",
-                "properties": {"expression": {"type": "string", "description": "Math expression to evaluate, e.g. '2 ** 10' or 'sqrt(144)'"}},
+                "properties": {
+                    "expression": {
+                        "type": "string",
+                        "description": "Math expression to evaluate, e.g. '2 ** 10' or 'sqrt(144)'",
+                    },
+                },
                 "required": ["expression"],
+                "additionalProperties": False,
             },
         },
     },
@@ -135,8 +154,11 @@ TOOL_SPECS = [
             "description": "Get current weather for a location.",
             "parameters": {
                 "type": "object",
-                "properties": {"location": {"type": "string", "description": "City name"}},
+                "properties": {
+                    "location": {"type": "string", "description": "City name"},
+                },
                 "required": ["location"],
+                "additionalProperties": False,
             },
         },
     },
@@ -153,27 +175,39 @@ TOOL_SPECS = [
                     "to_unit": {"type": "string"},
                 },
                 "required": ["value", "from_unit", "to_unit"],
+                "additionalProperties": False,
             },
         },
     },
 ]
 
 
+def list_tool_catalog() -> List[Dict[str, str]]:
+    """Name + description for each registered tool (UI / CLI)."""
+    rows = []
+    for spec in TOOL_SPECS:
+        fn = spec.get("function") or {}
+        rows.append(
+            {
+                "name": fn.get("name", ""),
+                "description": (fn.get("description") or "").strip(),
+            }
+        )
+    return rows
+
+
 # ── Agent class ────────────────────────────────────────────────────────────────
 
 class ResearchAgent:
     """
-    Multi-step research agent backed by NVIDIA NIM.
+    Multi-step research agent backed by Groq chat completions.
     Every reasoning step and tool call is captured in a structured Trace.
     """
 
     def __init__(self, version: str, system_prompt: Optional[str] = None, tracer: Optional[Tracer] = None):
         self.version = version
         self.tracer = tracer or Tracer()
-        api_key = os.environ.get("NVIDIA_API_KEY")
-        if not api_key:
-            raise EnvironmentError("NVIDIA_API_KEY not set")
-        self.client = OpenAI(base_url=nvidia_base_url(), api_key=api_key)
+        self.client = OpenAI(base_url=groq_base_url(), api_key=groq_api_key())
         self.system_prompt = system_prompt or self._default_system_prompt()
         self.available_tools = list(TOOLS_REGISTRY.keys())
 
@@ -187,20 +221,98 @@ class ResearchAgent:
             "• unit_converter — convert measurements (km↔miles, °C↔°F, kg↔lbs, etc.).\n\n"
             "If the question mixes topics (e.g. weather + conversion), handle each with the appropriate tool in sequence.\n"
             "Always reason briefly about which tool fits the user's intent. "
-            "Ground your final answer in tool outputs; do not invent numbers not returned by tools."
+            "Ground your final answer in tool outputs; do not invent numbers not returned by tools.\n\n"
+            "When issuing tool calls, use only the API function-calling channel. "
+            "Function names must be exactly: web_search, calculator, weather_lookup, or unit_converter — "
+            "never concatenate JSON onto the name, and never use XML, tags, or <function=...> syntax."
         )
 
-    def _call_llm(self, messages: List[Dict], use_tools: bool = True) -> Any:
-        kwargs = dict(
-            model=nvidia_agent_model(),
-            messages=messages,
-            temperature=0.1,
+    @staticmethod
+    def _inject_tool_format_reminder(messages: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Append a strict reminder if Groq rejected a malformed tool generation."""
+        reminder = (
+            "Reminder: call tools only via the standard function-calling API. "
+            "Each tool name is a separate identifier (web_search, calculator, weather_lookup, unit_converter); "
+            "arguments are a separate JSON object."
+        )
+        out = copy.deepcopy(messages)
+        for m in out:
+            if m.get("role") == "system":
+                m["content"] = (m.get("content") or "") + "\n\n" + reminder
+                return out
+        out.insert(0, {"role": "system", "content": reminder})
+        return out
+
+    @staticmethod
+    def _flatten_for_text_completion(messages: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Groq rejects requests where tool_choice forbids tools but the chat still contains
+        assistant tool_calls / tool roles — the model keeps emitting tools. Convert prior
+        tool turns into plain assistant + user text so the next request is a normal chat
+        completion with no tools parameter.
+        """
+        out: List[Dict[str, Any]] = []
+        for m in messages:
+            role = m.get("role")
+            if role == "assistant" and m.get("tool_calls"):
+                names: List[str] = []
+                for x in m["tool_calls"]:
+                    fn = x.get("function") or {}
+                    names.append(str(fn.get("name", "?")))
+                body = (m.get("content") or "").strip()
+                note = f"\n\n[Assistant invoked tools: {', '.join(names)}]"
+                out.append({"role": "assistant", "content": (body + note).strip()})
+            elif role == "tool":
+                nm = m.get("name") or "tool"
+                out.append(
+                    {
+                        "role": "user",
+                        "content": f"Tool `{nm}` output:\n{m.get('content', '')}",
+                    }
+                )
+            else:
+                out.append(copy.deepcopy(m))
+
+        for m in out:
+            if m.get("role") == "system":
+                m["content"] = (m.get("content") or "") + TEXT_ONLY_SYSTEM_SUFFIX
+                break
+        else:
+            out.insert(0, {"role": "system", "content": TEXT_ONLY_SYSTEM_SUFFIX.strip()})
+        return out
+
+    def _call_llm(self, messages: List[Dict], use_tools: bool = True, _retry_tool_format: bool = False) -> Any:
+        work_messages: List[Dict[str, Any]] = list(messages)
+        if not use_tools:
+            work_messages = self._flatten_for_text_completion(messages)
+
+        kwargs: Dict[str, Any] = dict(
+            model=groq_agent_model(),
+            messages=work_messages,
             max_tokens=1024,
         )
         if use_tools:
+            kwargs["temperature"] = 0.0
             kwargs["tools"] = TOOL_SPECS
             kwargs["tool_choice"] = "auto"
-        return self.client.chat.completions.create(**kwargs)
+            kwargs["parallel_tool_calls"] = False
+        else:
+            # Flattened transcript + no `tools` key — avoids Groq error:
+            # "Tool choice is none, but model called a tool"
+            kwargs["temperature"] = 0.0
+
+        try:
+            return chat_completions_create(self.client, notify_label="Groq agent", **kwargs)
+        except BadRequestError as e:
+            body = str(e)
+            if (
+                use_tools
+                and not _retry_tool_format
+                and ("tool_use_failed" in body or "tool call validation" in body.lower())
+            ):
+                fixed = self._inject_tool_format_reminder(messages)
+                return self._call_llm(fixed, use_tools=True, _retry_tool_format=True)
+            raise
 
     def _execute_tool(self, tool_name: str, params: Dict) -> Any:
         fn = TOOLS_REGISTRY.get(tool_name)
@@ -292,6 +404,7 @@ class ResearchAgent:
                 messages.append({
                     "role": "tool",
                     "tool_call_id": tc.id,
+                    "name": tool_name,
                     "content": str(result),
                 })
                 tool_results_for_interp.append((tool_name, result))

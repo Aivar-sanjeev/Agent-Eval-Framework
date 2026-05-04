@@ -1,4 +1,4 @@
-# Synthetic eval gate (no NVIDIA_API_KEY). Extend for live agent runs in CI if needed.
+# Synthetic eval gate (no GROQ_API_KEY). Extend for live Groq runs in CI if needed.
 name: Agent eval gate
 
 on:

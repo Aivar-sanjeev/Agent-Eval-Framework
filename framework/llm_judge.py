@@ -1,21 +1,18 @@
 """
-llm_judge.py — NVIDIA NIM-powered LLM-as-judge.
+llm_judge.py — Groq-powered LLM-as-judge (OpenAI-compatible API).
 All evaluators that need a model call go through this module.
 """
 from __future__ import annotations
 import json
-import os
-from typing import Optional
+
 from openai import OpenAI
 
-from framework.settings import nvidia_base_url, nvidia_judge_model
+from framework.openai_retry import chat_completions_create
+from framework.settings import groq_api_key, groq_base_url, groq_judge_model
 
 
 def get_client() -> OpenAI:
-    api_key = os.environ.get("NVIDIA_API_KEY")
-    if not api_key:
-        raise EnvironmentError("NVIDIA_API_KEY is not set in environment.")
-    return OpenAI(base_url=nvidia_base_url(), api_key=api_key)
+    return OpenAI(base_url=groq_base_url(), api_key=groq_api_key())
 
 
 def judge(
@@ -26,8 +23,7 @@ def judge(
     max_tokens: int = 512,
 ) -> dict | str:
     """
-    Call the NIM judge model and return parsed JSON (or raw string).
-    Always instructs the model to respond in JSON when expect_json=True.
+    Call the judge model and return parsed JSON (or raw string).
     """
     client = get_client()
 
@@ -38,8 +34,10 @@ def judge(
             "No preamble, no markdown fences, no explanation outside the JSON."
         )
 
-    response = client.chat.completions.create(
-        model=nvidia_judge_model(),
+    response = chat_completions_create(
+        client,
+        notify_label="Groq judge",
+        model=groq_judge_model(),
         messages=[
             {"role": "system", "content": system},
             {"role": "user", "content": user_prompt},
@@ -53,7 +51,6 @@ def judge(
     if not expect_json:
         return raw
 
-    # Strip markdown fences if model adds them despite instructions
     if raw.startswith("```"):
         raw = raw.split("```")[1]
         if raw.startswith("json"):
@@ -63,7 +60,6 @@ def judge(
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
-        # Attempt to extract first {...} block
         start = raw.find("{")
         end = raw.rfind("}") + 1
         if start != -1 and end > start:
