@@ -9,6 +9,10 @@ from pathlib import Path
 from typing import List, Optional
 from framework.schema import Trace, EvalResult
 
+try:
+    from framework.trace_index import TraceIndex
+except ImportError:
+    TraceIndex = None  # type: ignore
 
 DATA_DIR = Path(__file__).parent.parent / "data"
 TRACES_FILE = DATA_DIR / "traces.json"
@@ -17,25 +21,28 @@ EVAL_RESULTS_FILE = DATA_DIR / "eval_results.json"
 
 def _load_json(path: Path) -> list:
     if path.exists():
-        with open(path) as f:
+        with open(path, encoding="utf-8") as f:
             return json.load(f)
     return []
 
 
 def _save_json(path: Path, data: list) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w") as f:
-        json.dump(data, f, indent=2)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
 
 class Tracer:
     """Lightweight tracer that writes structured traces to JSON."""
 
-    def __init__(self, data_dir: Optional[Path] = None):
+    def __init__(self, data_dir: Optional[Path] = None, use_sqlite_index: bool = True):
         self.data_dir = data_dir or DATA_DIR
         self.traces_file = self.data_dir / "traces.json"
         self.eval_results_file = self.data_dir / "eval_results.json"
         self.data_dir.mkdir(parents=True, exist_ok=True)
+        self._index: Optional["TraceIndex"] = None
+        if use_sqlite_index and TraceIndex is not None:
+            self._index = TraceIndex(self.data_dir / "traces_index.db")
 
     # ── Trace CRUD ─────────────────────────────
 
@@ -46,9 +53,13 @@ class Tracer:
             if t["trace_id"] == trace.trace_id:
                 traces[i] = trace.model_dump()
                 _save_json(self.traces_file, traces)
+                if self._index is not None:
+                    self._index.upsert(trace)
                 return
         traces.append(trace.model_dump())
         _save_json(self.traces_file, traces)
+        if self._index is not None:
+            self._index.upsert(trace)
 
     def get_trace(self, trace_id: str) -> Optional[Trace]:
         for t in _load_json(self.traces_file):
@@ -64,6 +75,18 @@ class Tracer:
 
     def get_all_traces(self) -> List[Trace]:
         return [Trace(**t) for t in _load_json(self.traces_file)]
+
+    def reindex_sqlite_from_json(self) -> int:
+        """Rebuild SQLite from traces.json (recovery / migration)."""
+        if self._index is None:
+            return 0
+        return self._index.reindex_from_json(self.traces_file)
+
+    def query_traces(self, **kwargs):
+        """Delegate to SQLite index (tool_name, span_type, agent_version, limit)."""
+        if self._index is None:
+            return []
+        return self._index.query_traces(**kwargs)
 
     # ── EvalResult CRUD ────────────────────────
 

@@ -22,8 +22,8 @@ from framework.schema import (
     FinalAnswerSpan, InterpretationSpan, ReasoningSpan, ToolCallSpan, Trace,
 )
 from framework.tracer import Tracer
+from framework.settings import nvidia_agent_model, nvidia_base_url
 
-NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1"
 
 
 # ── Tool implementations ───────────────────────────────────────────────────────
@@ -173,21 +173,26 @@ class ResearchAgent:
         api_key = os.environ.get("NVIDIA_API_KEY")
         if not api_key:
             raise EnvironmentError("NVIDIA_API_KEY not set")
-        self.client = OpenAI(base_url=NVIDIA_BASE_URL, api_key=api_key)
+        self.client = OpenAI(base_url=nvidia_base_url(), api_key=api_key)
         self.system_prompt = system_prompt or self._default_system_prompt()
         self.available_tools = list(TOOLS_REGISTRY.keys())
 
     def _default_system_prompt(self) -> str:
         return (
-            "You are a precise research assistant. Use the available tools to answer questions accurately. "
-            "Always reason step by step about which tool to use and why. "
-            "After getting a tool result, clearly state what you learned and decide if you need more information. "
-            "When you have enough information, provide a concise, accurate final answer."
+            "You are a precise research assistant. Use the available tools to answer questions accurately.\n\n"
+            "Tool routing (pick exactly one best tool per information need):\n"
+            "• web_search — facts, news, company metrics, science, definitions, anything needing external knowledge.\n"
+            "• calculator — numeric expressions, compound interest, unit math that is pure calculation.\n"
+            "• weather_lookup — current weather for a named city/location only.\n"
+            "• unit_converter — convert measurements (km↔miles, °C↔°F, kg↔lbs, etc.).\n\n"
+            "If the question mixes topics (e.g. weather + conversion), handle each with the appropriate tool in sequence.\n"
+            "Always reason briefly about which tool fits the user's intent. "
+            "Ground your final answer in tool outputs; do not invent numbers not returned by tools."
         )
 
     def _call_llm(self, messages: List[Dict], use_tools: bool = True) -> Any:
         kwargs = dict(
-            model="meta/llama-3.3-70b-instruct",
+            model=nvidia_agent_model(),
             messages=messages,
             temperature=0.1,
             max_tokens=1024,

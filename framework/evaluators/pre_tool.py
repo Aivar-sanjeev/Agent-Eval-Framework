@@ -133,6 +133,7 @@ def run_pre_tool_evals(trace_id: str, query: str, spans: List[Dict]) -> List[Eva
             continue
         span = ReasoningSpan(**span_dict)
         results.append(eval_intent_clarity(trace_id, span, query))
-        results.append(eval_tool_selection(trace_id, span, query))
+        if span.selected_tool:
+            results.append(eval_tool_selection(trace_id, span, query))
         results.append(eval_pre_call_hallucination(trace_id, span, query))
     return results

@@ -8,16 +8,14 @@ import os
 from typing import Optional
 from openai import OpenAI
 
-
-NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1"
-JUDGE_MODEL = "meta/llama-3.3-70b-instruct"   # Strong reasoning model on NIM
+from framework.settings import nvidia_base_url, nvidia_judge_model
 
 
 def get_client() -> OpenAI:
     api_key = os.environ.get("NVIDIA_API_KEY")
     if not api_key:
         raise EnvironmentError("NVIDIA_API_KEY is not set in environment.")
-    return OpenAI(base_url=NVIDIA_BASE_URL, api_key=api_key)
+    return OpenAI(base_url=nvidia_base_url(), api_key=api_key)
 
 
 def judge(
@@ -41,7 +39,7 @@ def judge(
         )
 
     response = client.chat.completions.create(
-        model=JUDGE_MODEL,
+        model=nvidia_judge_model(),
         messages=[
             {"role": "system", "content": system},
             {"role": "user", "content": user_prompt},

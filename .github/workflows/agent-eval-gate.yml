@@ -1,0 +1,27 @@
+# Synthetic eval gate (no NVIDIA_API_KEY). Extend for live agent runs in CI if needed.
+name: Agent eval gate
+
+on:
+  push:
+    paths:
+      - 'agent_eval_framework/**'
+  pull_request:
+    paths:
+      - 'agent_eval_framework/**'
+
+defaults:
+  run:
+    working-directory: agent_eval_framework
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: python generate_demo_dashboard.py
+      - name: Deployment gate (v2.0 must pass thresholds)
+        run: python -m framework.cli gate --version v2.0

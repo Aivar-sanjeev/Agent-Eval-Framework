@@ -5,11 +5,21 @@ across agent versions, layer breakdowns, and deployment gate status.
 from __future__ import annotations
 import json
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 from framework.tracer import Tracer
 from framework.runner import GATE_THRESHOLDS
+from framework.score_history import load_history
 
 REPORTS_DIR = Path(__file__).parent.parent / "reports"
+
+
+def _mean_eval_score(scores_snapshot: Dict[str, Any]) -> float:
+    """Average of per-eval avg_score fields from a suite snapshot."""
+    vals = []
+    for _name, data in scores_snapshot.items():
+        if isinstance(data, dict) and "avg_score" in data:
+            vals.append(float(data["avg_score"]))
+    return round(sum(vals) / len(vals), 3) if vals else 0.0
 
 
 def generate_dashboard(
@@ -68,6 +78,8 @@ def generate_dashboard(
             for layer, vals in avgs.items()
         }
 
+    history_rows = list(reversed(load_history(80)))
+
     html = _render_html(
         versions=versions,
         version_scores=version_scores,
@@ -76,12 +88,13 @@ def generate_dashboard(
         traces_count=traces_count,
         layer_avgs=layer_avgs,
         layer_order=layer_order,
+        history_rows=history_rows,
     )
 
-    with open(output_path, "w") as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
 
-    print(f"  Dashboard saved → {output_path}")
+    print(f"  Dashboard saved -> {output_path}")
     return output_path
 
 
@@ -92,7 +105,14 @@ def _score_color(score: float, threshold: float) -> str:
 
 
 def _render_html(
-    versions, version_scores, all_evals, gate_status, traces_count, layer_avgs, layer_order
+    versions,
+    version_scores,
+    all_evals,
+    gate_status,
+    traces_count,
+    layer_avgs,
+    layer_order,
+    history_rows,
 ) -> str:
     layer_colors = {
         "pre_tool": "#6366f1",
@@ -241,6 +261,31 @@ def _render_html(
         "labels": ["Pre-Tool", "Post-Tool", "E2E"],
         "datasets": radar_datasets,
     })
+
+    # Score run history (append-only suite runs)
+    if history_rows:
+        hist_body = ""
+        for r in history_rows[:25]:
+            ts = r.get("ts", "")[:19].replace("T", " ")
+            ver = r.get("agent_version", "")
+            gp = r.get("gate_passed", False)
+            gate_html = "<span style='color:#22c55e'>PASS</span>" if gp else "<span style='color:#ef4444'>BLOCK</span>"
+            mean_s = _mean_eval_score(r.get("scores") or {})
+            hist_body += f"""<tr><td style='font-family:Space Mono,monospace;font-size:0.78rem;color:#64748b'>{ts}</td>
+<td>{ver}</td><td>{gate_html}</td><td style='font-family:Space Mono,monospace'>{mean_s:.2f}</td></tr>"""
+        history_section_html = f"""
+  <div class="section">
+    <div class="section-title">Recent Eval Suite Runs (score history)</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Timestamp (UTC)</th><th>Agent version</th><th>Gate</th><th>Mean eval score</th></tr></thead>
+        <tbody>{hist_body}</tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;color:#64748b;font-size:0.78rem;font-family:Space Mono,monospace">Appended on each <code>run_suite</code> / demo — use for release-to-release comparisons.</p>
+  </div>"""
+    else:
+        history_section_html = ""
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -529,6 +574,8 @@ def _render_html(
 </div>
 
 <div class="container">
+
+  {history_section_html}
 
   <!-- Deployment Gate -->
   <div class="section">
